@@ -18,6 +18,7 @@ const WeekDateBtn = ({ selectedDate, onChange, weekProps }: Props) => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const { weekDays } = weekProps;
 
+  const dateFormat = weekProps?.dateFormat ?? 'DD MMM YYYY';
   const weekStart = getWeekBoundaries(selectedDate, weekDays, minDate, maxDate);
 
   const lastDayOffset = Math.max(...weekDays);
@@ -60,7 +61,7 @@ const WeekDateBtn = ({ selectedDate, onChange, weekProps }: Props) => {
         disabled={!canGo('prev')}
       />
       <Button style={{ padding: 4 }} onClick={handleOpen} aria-label="selected week">
-        {`${dayjs(weekStart).format('DD')} - ${weekEnd.format('DD MMM YYYY')}`}
+        {`${dayjs(weekStart).format('DD')} - ${weekEnd.format(dateFormat)}`}
       </Button>
       <Popover
         open={Boolean(anchorEl)}

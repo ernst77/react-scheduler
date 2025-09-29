@@ -12,9 +12,10 @@ interface Props {
 }
 
 const DayDateBtn = ({ selectedDate, onChange }: Props) => {
-  const { navigationPickerProps, minDate, maxDate } = useStore();
+  const { navigationPickerProps, minDate, maxDate, day } = useStore();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
+  const dateFormat = day?.dateFormat ?? 'LL';
   const selectedDayjs = dayjs(selectedDate);
 
   const handleOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -54,7 +55,7 @@ const DayDateBtn = ({ selectedDate, onChange }: Props) => {
         disabled={!canGo('prev')}
       />
       <Button style={{ padding: 4 }} onClick={handleOpen} aria-label="selected date">
-        {selectedDayjs.format('LL')}
+        {selectedDayjs.format(dateFormat)}
       </Button>
       <Popover
         open={Boolean(anchorEl)}

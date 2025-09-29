@@ -12,9 +12,10 @@ interface Props {
 }
 
 const MonthDateBtn = ({ selectedDate, onChange }: Props) => {
-  const { navigationPickerProps, minDate, maxDate } = useStore();
+  const { navigationPickerProps, minDate, maxDate, month } = useStore();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
+  const dateFormat = month?.dateFormat ?? 'MMMM YYYY';
   const selectedDayjs = dayjs(selectedDate);
 
   const handleOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -54,7 +55,7 @@ const MonthDateBtn = ({ selectedDate, onChange }: Props) => {
         disabled={!canGo('prev')}
       />
       <Button style={{ padding: 4 }} onClick={handleOpen} aria-label="selected month">
-        {selectedDayjs.format('MMMM YYYY')}
+        {selectedDayjs.format(dateFormat)}
       </Button>
       <Popover
         open={Boolean(anchorEl)}

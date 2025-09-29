@@ -214,6 +214,7 @@ export interface DayProps {
   headRenderer?(day: Date): React.ReactNode;
   hourRenderer?(hour: string): React.ReactNode;
   navigation?: boolean;
+  dateFormat?: string;
 }
 
 export interface WeekProps {
@@ -226,6 +227,7 @@ export interface WeekProps {
   headRenderer?(day: Date): React.ReactNode;
   hourRenderer?(hour: string): React.ReactNode;
   navigation?: boolean;
+  dateFormat?: string;
   disableGoToDay?: boolean;
 }
 
@@ -237,6 +239,7 @@ export interface MonthProps {
   cellRenderer?(props: CellRenderedProps): React.ReactNode;
   headRenderer?(day: Date): React.ReactNode;
   navigation?: boolean;
+  dateFormat?: string;
   disableGoToDay?: boolean;
 }
 
