@@ -59,6 +59,7 @@ export declare interface DayProps {
     headRenderer?(day: Date): default_2.ReactNode;
     hourRenderer?(hour: string): default_2.ReactNode;
     navigation?: boolean;
+    dateFormat?: string;
 }
 
 export declare type DefaultResource = {
@@ -126,6 +127,7 @@ declare interface MonthProps {
     cellRenderer?(props: CellRenderedProps): default_2.ReactNode;
     headRenderer?(day: Date): default_2.ReactNode;
     navigation?: boolean;
+    dateFormat?: string;
     disableGoToDay?: boolean;
 }
 
@@ -322,6 +324,7 @@ export declare interface WeekProps {
     headRenderer?(day: Date): default_2.ReactNode;
     hourRenderer?(hour: string): default_2.ReactNode;
     navigation?: boolean;
+    dateFormat?: string;
     disableGoToDay?: boolean;
 }
 

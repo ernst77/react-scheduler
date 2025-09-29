@@ -41497,8 +41497,9 @@ const LocaleArrow = memo(
 );
 LocaleArrow.displayName = "LocaleArrow";
 const MonthDateBtn = ({ selectedDate, onChange }) => {
-  const { navigationPickerProps, minDate, maxDate } = useStore();
+  const { navigationPickerProps, minDate, maxDate, month } = useStore();
   const [anchorEl, setAnchorEl] = useState(null);
+  const dateFormat = (month == null ? void 0 : month.dateFormat) ?? "MMMM YYYY";
   const selectedDayjs = dayjs(selectedDate);
   const handleOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -41532,7 +41533,7 @@ const MonthDateBtn = ({ selectedDate, onChange }) => {
         disabled: !canGo("prev")
       }
     ),
-    /* @__PURE__ */ jsx(Button$1, { style: { padding: 4 }, onClick: handleOpen, "aria-label": "selected month", children: selectedDayjs.format("MMMM YYYY") }),
+    /* @__PURE__ */ jsx(Button$1, { style: { padding: 4 }, onClick: handleOpen, "aria-label": "selected month", children: selectedDayjs.format(dateFormat) }),
     /* @__PURE__ */ jsx(
       Popover$1,
       {
@@ -41572,6 +41573,7 @@ const WeekDateBtn = ({ selectedDate, onChange, weekProps }) => {
   const { navigationPickerProps, minDate, maxDate } = useStore();
   const [anchorEl, setAnchorEl] = useState(null);
   const { weekDays } = weekProps;
+  const dateFormat = (weekProps == null ? void 0 : weekProps.dateFormat) ?? "DD MMM YYYY";
   const weekStart = getWeekBoundaries(selectedDate, weekDays, minDate, maxDate);
   const lastDayOffset = Math.max(...weekDays);
   const weekEnd = dayjs(weekStart).add(lastDayOffset, "day").endOf("day");
@@ -41607,7 +41609,7 @@ const WeekDateBtn = ({ selectedDate, onChange, weekProps }) => {
         disabled: !canGo("prev")
       }
     ),
-    /* @__PURE__ */ jsx(Button$1, { style: { padding: 4 }, onClick: handleOpen, "aria-label": "selected week", children: `${dayjs(weekStart).format("DD")} - ${weekEnd.format("DD MMM YYYY")}` }),
+    /* @__PURE__ */ jsx(Button$1, { style: { padding: 4 }, onClick: handleOpen, "aria-label": "selected week", children: `${dayjs(weekStart).format("DD")} - ${weekEnd.format(dateFormat)}` }),
     /* @__PURE__ */ jsx(
       Popover$1,
       {
@@ -41644,8 +41646,9 @@ const WeekDateBtn = ({ selectedDate, onChange, weekProps }) => {
   ] });
 };
 const DayDateBtn = ({ selectedDate, onChange }) => {
-  const { navigationPickerProps, minDate, maxDate } = useStore();
+  const { navigationPickerProps, minDate, maxDate, day } = useStore();
   const [anchorEl, setAnchorEl] = useState(null);
+  const dateFormat = (day == null ? void 0 : day.dateFormat) ?? "LL";
   const selectedDayjs = dayjs(selectedDate);
   const handleOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -41679,7 +41682,7 @@ const DayDateBtn = ({ selectedDate, onChange }) => {
         disabled: !canGo("prev")
       }
     ),
-    /* @__PURE__ */ jsx(Button$1, { style: { padding: 4 }, onClick: handleOpen, "aria-label": "selected date", children: selectedDayjs.format("LL") }),
+    /* @__PURE__ */ jsx(Button$1, { style: { padding: 4 }, onClick: handleOpen, "aria-label": "selected date", children: selectedDayjs.format(dateFormat) }),
     /* @__PURE__ */ jsx(
       Popover$1,
       {
