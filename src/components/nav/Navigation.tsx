@@ -6,7 +6,7 @@ import { useCallback, useState } from 'react';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import ViewAgendaIcon from '@mui/icons-material/ViewAgenda';
 import useStore from '@/hooks/useStore.ts';
-import { getTimeZonedDate, isDateInRange } from '@/helpers/generals.tsx';
+import { getTimeZonedDate, isDateInRange, isDateToday } from '@/helpers/generals.tsx';
 import { MonthDateBtn } from '@/components/nav/MonthDateBtn.tsx';
 import { WeekDateBtn } from '@/components/nav/WeekDateBtn.tsx';
 import { DayDateBtn } from '@/components/nav/DayDateBtn.tsx';
@@ -278,6 +278,8 @@ export const Navigation = () => {
   if (!navigation && disableViewNavigator) return null;
 
   const views = getViews();
+  const todaySelected = isDateToday(selectedDate);
+  console.log(todaySelected, selectedDate);
 
   return (
     <NavigationContainer sticky={stickyNavigation ? '1' : '0'}>
@@ -292,7 +294,8 @@ export const Navigation = () => {
       >
         {canNavigateToToday() && (
           <Button
-            variant="outlined"
+            disableRipple
+            variant={todaySelected ? 'contained' : 'outlined'}
             onClick={handleTodayClick}
             aria-label={translations.navigation.today}
             sx={{
@@ -301,10 +304,6 @@ export const Navigation = () => {
               textTransform: 'capitalize',
               borderColor: theme.palette.divider,
               color: theme.palette.text.primary,
-              '&:hover': {
-                backgroundColor: theme.palette.action.hover,
-                borderColor: theme.palette.primary.main,
-              },
             }}
           >
             {translations.navigation.today}

@@ -41574,7 +41574,7 @@ const WeekDateBtn = ({ selectedDate, onChange, weekProps }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const { weekDays } = weekProps;
   const dateFormat = (weekProps == null ? void 0 : weekProps.dateFormat) ?? "DD MMM YYYY";
-  const weekStart = getWeekBoundaries(selectedDate, weekDays, minDate, maxDate);
+  const weekStart = getWeekBoundaries(selectedDate, weekDays, minDate, maxDate, weekProps.weekStartOn);
   const lastDayOffset = Math.max(...weekDays);
   const weekEnd = dayjs(weekStart).add(lastDayOffset, "day").endOf("day");
   const handleOpen = (event) => {
@@ -41940,6 +41940,8 @@ const Navigation = () => {
   }, [view, month, week, day, selectedDate, handleSelectedDateChange]);
   if (!navigation && disableViewNavigator) return null;
   const views = getViews();
+  const todaySelected = isDateToday(selectedDate);
+  console.log(todaySelected, selectedDate);
   return /* @__PURE__ */ jsxs(NavigationContainer, { sticky: stickyNavigation ? "1" : "0", children: [
     /* @__PURE__ */ jsx("div", { "data-testid": "date-navigator", children: navigation && renderDateSelector() }),
     /* @__PURE__ */ jsxs(
@@ -41954,7 +41956,8 @@ const Navigation = () => {
           canNavigateToToday() && /* @__PURE__ */ jsx(
             Button$1,
             {
-              variant: "outlined",
+              disableRipple: true,
+              variant: todaySelected ? "contained" : "outlined",
               onClick: handleTodayClick,
               "aria-label": translations.navigation.today,
               sx: {
@@ -41962,11 +41965,7 @@ const Navigation = () => {
                 fontWeight: 500,
                 textTransform: "capitalize",
                 borderColor: theme.palette.divider,
-                color: theme.palette.text.primary,
-                "&:hover": {
-                  backgroundColor: theme.palette.action.hover,
-                  borderColor: theme.palette.primary.main
-                }
+                color: theme.palette.text.primary
               },
               children: translations.navigation.today
             }

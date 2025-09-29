@@ -19,7 +19,7 @@ const WeekDateBtn = ({ selectedDate, onChange, weekProps }: Props) => {
   const { weekDays } = weekProps;
 
   const dateFormat = weekProps?.dateFormat ?? 'DD MMM YYYY';
-  const weekStart = getWeekBoundaries(selectedDate, weekDays, minDate, maxDate);
+  const weekStart = getWeekBoundaries(selectedDate, weekDays, minDate, maxDate, weekProps.weekStartOn);
 
   const lastDayOffset = Math.max(...weekDays);
   const weekEnd = dayjs(weekStart).add(lastDayOffset, 'day').endOf('day');
