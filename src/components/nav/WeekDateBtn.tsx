@@ -18,9 +18,10 @@ const WeekDateBtn = ({ selectedDate, onChange, weekProps }: Props) => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const { weekDays } = weekProps;
 
-  const { weekStart, weekStartOn } = getWeekBoundaries(selectedDate, weekDays, minDate, maxDate);
+  const weekStart = getWeekBoundaries(selectedDate, weekDays, minDate, maxDate);
 
-  const weekEnd = dayjs(weekStart).endOf('week').add(weekStartOn, 'day');
+  const lastDayOffset = Math.max(...weekDays);
+  const weekEnd = dayjs(weekStart).add(lastDayOffset, 'day').endOf('day');
 
   const handleOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);

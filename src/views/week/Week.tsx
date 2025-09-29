@@ -29,9 +29,10 @@ export const Week = () => {
     timeZone,
   } = useStore();
 
-  const { weekDays, startHour, endHour, step } = week!;
+  const { weekDays, startHour, endHour, step, weekStartOn } = week!;
 
-  const { weekStart, weekStartOn } = getWeekBoundaries(selectedDate, weekDays, minDate, maxDate);
+  const weekStart = getWeekBoundaries(selectedDate, weekDays, minDate, maxDate, weekStartOn);
+
 
   const days = generateWeekDays(weekStart, weekStartOn, weekDays, maxDate);
 

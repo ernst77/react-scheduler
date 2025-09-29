@@ -87,16 +87,18 @@ const DayTable = ({
         stickyNavigation={stickyNavigation}
       >
         <span className="rs__cell rs__time"></span>
-        {resources.map((resource) => (
-          <span
-            key={resource[resourceFields.idField]}
-            className="rs__cell rs__header"
-            style={{ height: headerHeight }}
-          >
+        {resources.map((resource) => {
+          if (resource.id !== 'default') {
+            return <span
+              key={resource[resourceFields.idField]}
+              className="rs__cell rs__header"
+              style={{ height: headerHeight }}
+            >
             <ResourceHeader resource={resource} />
-            {renderMultiDayEvents(resourcedEvents, resource)}
+              {renderMultiDayEvents(resourcedEvents, resource)}
           </span>
-        ))}
+          }
+        })}
       </TableGrid>
 
       <TableGrid days={resources.length} ref={bodyRef}>
