@@ -7216,6 +7216,9 @@ const ArrowButton = styled(IconButton$1)(({ theme }) => ({
     transform: "scale(1.1)"
   }
 }));
+const DayShowHeader = styled("div")(({ theme }) => ({
+  borderBottom: `1px solid ${theme.palette.divider}`
+}));
 const MonthCell = styled("div")(({ theme }) => ({
   position: "relative",
   // height: '100%',
@@ -43085,7 +43088,7 @@ const DayTable = ({
         stickyNavigation,
         children: [
           /* @__PURE__ */ jsx("span", { className: "rs__cell rs__time" }),
-          showCurrentDay && /* @__PURE__ */ jsx(Box, { children: /* @__PURE__ */ jsx(
+          showCurrentDay && /* @__PURE__ */ jsx(DayShowHeader, { children: /* @__PURE__ */ jsx(
             Typography$1,
             {
               sx: {

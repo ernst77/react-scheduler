@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
 import useStore from '../../hooks/useStore.ts';
-import { TableGrid } from '@/theme/css.ts';
+import { DayShowHeader, TableGrid } from '@/theme/css.ts';
 import {
   filterMultiDaySlot,
   filterTodayEvents,
@@ -13,7 +13,7 @@ import { DefaultResource, ProcessedEvent } from '@/index.tsx';
 import useSyncScroll from '../../hooks/useSyncScroll.ts';
 import usePosition from '../../positionManger/usePosition.ts';
 import EventItem from '../events/EventItem.tsx';
-import { Box, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import Cell from '../common/Cell.tsx';
 import { dayjs } from '@/config/dayjs.ts';
 import { TodayEvents } from '@/components/events/TodayEvents.tsx';
@@ -86,7 +86,7 @@ const DayTable = ({
         stickyNavigation={stickyNavigation}
       >
         <span className="rs__cell rs__time"></span>
-        {showCurrentDay && <Box>
+        {showCurrentDay && <DayShowHeader>
           <Typography
             sx={{
               py:2,
@@ -94,7 +94,7 @@ const DayTable = ({
               fontWeight: 'bold',
               color: 'primary.main',
             }}>{dayjs(selectedDate).format('DD dddd')}</Typography>
-        </Box>}
+        </DayShowHeader>}
         {resources.map((resource) => {
           if (resource.id !== 'default') {
             return <span

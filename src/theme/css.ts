@@ -539,6 +539,10 @@ export const ArrowButton = styled(IconButton)(({ theme }) => ({
   },
 }));
 
+export const DayShowHeader = styled('div')(({ theme }) => ({
+  borderBottom: `1px solid ${theme.palette.divider}`,
+}));
+
 export const MonthCell = styled('div')(({ theme }) => ({
   position: 'relative',
   // height: '100%',
