@@ -9,12 +9,12 @@ import { getResourcedEvents, sortEventsByTheEarliest } from '../../helpers/gener
 import { MonthEvents } from '@/components/events/MonthEvents.tsx';
 
 interface Props {
-  daysList: Date[];
+  // daysList: Date[];
   resource?: DefaultResource;
   eachWeekStart: Date[];
 }
 
-const MonthTable = ({ daysList, resource, eachWeekStart }: Props) => {
+const MonthTable = ({resource, eachWeekStart }: Props) => {
   const {
     selectedDate,
     events,
@@ -57,7 +57,9 @@ const MonthTable = ({ daysList, resource, eachWeekStart }: Props) => {
   const renderWeek = useCallback(
     (weekStart: Date, weekDays: WeekDays[]) => {
       let days = Array.from({ length: 7 }, (_, i) => dayjs(weekStart).add(i, 'day').toDate());
+      console.log(days);
       days = days.filter((date) => weekDays.includes(dayjs(date).day()));
+      console.log(days);
 
       return days.map((date) => {
         const dateDayjs = dayjs(date);
@@ -96,14 +98,14 @@ const MonthTable = ({ daysList, resource, eachWeekStart }: Props) => {
         sticky="1"
         stickyNavigation={stickyNavigation}
       >
-        {daysList.map((date, i) => (
+        {weekDays.map((day, i) => (
           <Typography
             key={i}
             className="rs__cell rs__header rs__header__center"
             align="center"
             variant="body2"
           >
-            {dayjs(date).format('dddd').slice(0, 2)}
+            {dayjs().startOf('week').add(-1 + day, 'day').format('dd').toUpperCase()}
           </Typography>
         ))}
       </TableGrid>

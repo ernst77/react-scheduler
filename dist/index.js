@@ -43654,7 +43654,7 @@ const MonthEvents = memo(
     ] });
   }
 );
-const MonthTable = ({ daysList, resource, eachWeekStart }) => {
+const MonthTable = ({ resource, eachWeekStart }) => {
   const {
     selectedDate,
     events,
@@ -43693,6 +43693,7 @@ const MonthTable = ({ daysList, resource, eachWeekStart }) => {
     (weekStart, weekDays2) => {
       let days = Array.from({ length: 7 }, (_, i2) => dayjs(weekStart).add(i2, "day").toDate());
       days = days.filter((date2) => weekDays2.includes(dayjs(date2).day()));
+      console.log(days);
       return days.map((date2) => {
         const dateDayjs = dayjs(date2);
         const isOutsideMonth = !dateDayjs.isBetween(monthStart, monthEnd, "month", "[]");
@@ -43728,13 +43729,13 @@ const MonthTable = ({ daysList, resource, eachWeekStart }) => {
         indent: "0",
         sticky: "1",
         stickyNavigation,
-        children: daysList.map((date2, i2) => /* @__PURE__ */ jsx(
+        children: weekDays.map((day, i2) => /* @__PURE__ */ jsx(
           Typography$1,
           {
             className: "rs__cell rs__header rs__header__center",
             align: "center",
             variant: "body2",
-            children: dayjs(date2).format("dddd").slice(0, 2)
+            children: dayjs().startOf("week").add(-1 + day, "day").format("dd").toUpperCase()
           },
           i2
         ))
@@ -43744,8 +43745,8 @@ const MonthTable = ({ daysList, resource, eachWeekStart }) => {
   ] });
 };
 const MonthTable$1 = memo(MonthTable);
-const MonthGrid = memo(({ daysList, eachWeekStart, resource }) => {
-  return /* @__PURE__ */ jsx(MonthTable$1, { daysList, eachWeekStart, resource });
+const MonthGrid = memo(({ eachWeekStart, resource }) => {
+  return /* @__PURE__ */ jsx(MonthTable$1, { eachWeekStart, resource });
 });
 MonthGrid.displayName = "MonthGrid";
 const Month = () => {
@@ -43766,7 +43767,7 @@ const Month = () => {
         }
         return /* @__PURE__ */ jsx(AgendaView, { view: "month", events: resourcedEvents });
       }
-      return /* @__PURE__ */ jsx(MonthGrid, { daysList: days, eachWeekStart: weeks, resource });
+      return /* @__PURE__ */ jsx(MonthGrid, { eachWeekStart: weeks, resource });
     },
     [agenda, days, weeks, events, resourceFields, fields]
   );

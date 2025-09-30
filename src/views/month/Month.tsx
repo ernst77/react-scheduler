@@ -37,7 +37,7 @@ export const Month = () => {
 
         return <AgendaView view="month" events={resourcedEvents} />;
       }
-      return <MonthGrid daysList={days} eachWeekStart={weeks} resource={resource} />;
+      return <MonthGrid eachWeekStart={weeks} resource={resource} />;
     },
     [agenda, days, weeks, events, resourceFields, fields]
   );
