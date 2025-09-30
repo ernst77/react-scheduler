@@ -279,7 +279,6 @@ export const Navigation = () => {
 
   const views = getViews();
   const todaySelected = isDateToday(selectedDate);
-  console.log(todaySelected, selectedDate);
 
   return (
     <NavigationContainer sticky={stickyNavigation ? '1' : '0'}>

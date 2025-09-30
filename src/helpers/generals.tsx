@@ -324,7 +324,7 @@ export const generateWeekDays = (
 };
 
 export const generateDays = (weekStart: Date, weekDays: WeekDays[]): Date[] => {
-  return weekDays.map((d) => dayjs(weekStart).add(d, 'day').startOf('day').toDate());
+  return weekDays.map((d) => dayjs(weekStart).add(-1 + d, 'day').startOf('day').toDate());
 };
 
 export const generateHourSlots = (startHour: Date, endHour: Date, stepMinutes: number): Date[] => {

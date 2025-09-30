@@ -868,7 +868,7 @@ const generateWeekDays = (selectedDate, weekStartOn, weekDays, maxDate) => {
   return days.filter((date2) => !maxDate || dayjs(date2).startOf("day").isSameOrBefore(dayjs(maxDate).startOf("day"))).sort((a, b) => a.getTime() - b.getTime());
 };
 const generateDays = (weekStart, weekDays) => {
-  return weekDays.map((d) => dayjs(weekStart).add(d, "day").startOf("day").toDate());
+  return weekDays.map((d) => dayjs(weekStart).add(-1 + d, "day").startOf("day").toDate());
 };
 const generateHourSlots = (startHour, endHour, stepMinutes) => {
   const result = [];
@@ -41944,7 +41944,6 @@ const Navigation = () => {
   if (!navigation && disableViewNavigator) return null;
   const views = getViews();
   const todaySelected = isDateToday(selectedDate);
-  console.log(todaySelected, selectedDate);
   return /* @__PURE__ */ jsxs(NavigationContainer, { sticky: stickyNavigation ? "1" : "0", children: [
     /* @__PURE__ */ jsx("div", { "data-testid": "date-navigator", children: navigation && renderDateSelector() }),
     /* @__PURE__ */ jsxs(
@@ -43718,8 +43717,6 @@ const MonthTable = ({ resource, eachWeekStart }) => {
     },
     [monthStart, monthEnd, getEventsForDate, onClickMore, handleGotoDay]
   );
-  console.log("startof", dayjs().startOf("week").format("YYYY-MM-DD"));
-  console.log("weekDays", weekDays);
   return /* @__PURE__ */ jsxs(Fragment, { children: [
     /* @__PURE__ */ jsx(
       TableGrid,
@@ -43756,7 +43753,6 @@ const Month = () => {
   const monthStart = selectedDayjs.startOf("month").toDate();
   const monthEnd = selectedDayjs.endOf("month").toDate();
   const weeks = generateMonthWeeks(monthStart, monthEnd, weekStartOn);
-  console.log("weeks", weeks);
   const days = generateDays(weeks[0], weekDays);
   const events = useMonthEvents(weeks, days);
   const renderContent = useCallback(
