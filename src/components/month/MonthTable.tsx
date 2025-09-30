@@ -23,7 +23,10 @@ const MonthTable = ({ daysList, resource, eachWeekStart }: Props) => {
     fields,
     stickyNavigation,
     onClickMore,
+    month
   } = useStore();
+
+  const dayCount = month?.weekDays.length ?? 7;
 
   const { headersRef, bodyRef } = useSyncScroll();
   const selectedDayjs = dayjs(selectedDate);
@@ -85,7 +88,7 @@ const MonthTable = ({ daysList, resource, eachWeekStart }: Props) => {
   return (
     <>
       <TableGrid
-        days={7}
+        days={dayCount}
         ref={headersRef}
         indent="0"
         sticky="1"
@@ -98,12 +101,12 @@ const MonthTable = ({ daysList, resource, eachWeekStart }: Props) => {
             align="center"
             variant="body2"
           >
-            {dayjs(date).format('ddd')}
+            {dayjs(date).format('dddd').slice(0, 2)}
           </Typography>
         ))}
       </TableGrid>
 
-      <TableGrid days={7} ref={bodyRef} indent="0">
+      <TableGrid days={dayCount} ref={bodyRef} indent="0">
         {eachWeekStart.map((weekStart) => (
           <div key={dayjs(weekStart).valueOf()} style={{ display: 'contents' }}>
             {renderWeek(weekStart)}

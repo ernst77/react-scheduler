@@ -6818,14 +6818,14 @@ const fadeIn = keyframes`
 `;
 const TableGrid = styled("div")(({ days, sticky = "0", stickyNavigation, indent = "1", theme }) => ({
   display: "grid",
-  gridTemplateColumns: +indent > 0 ? `80px repeat(${days}, minmax(120px, 1fr))` : `repeat(${days}, minmax(120px, 1fr))`,
+  gridTemplateColumns: +indent > 0 ? `80px repeat(${days}, minmax(45px, 1fr))` : `repeat(${days}, minmax(45px, 1fr))`,
   overflowX: "auto",
   overflowY: "hidden",
   position: sticky === "1" ? "sticky" : "relative",
   top: sticky === "1" ? stickyNavigation ? 36 : 0 : void 0,
   zIndex: sticky === "1" ? 99 : void 0,
   [theme.breakpoints.down("sm")]: {
-    gridTemplateColumns: +indent > 0 ? `60px repeat(${days}, minmax(100px, 1fr))` : ""
+    gridTemplateColumns: +indent > 0 ? `45px repeat(${days}, minmax(50px, 1fr))` : ""
   },
   borderStyle: "solid",
   borderColor: theme.palette.divider,
@@ -6861,7 +6861,7 @@ const TableGrid = styled("div")(({ days, sticky = "0", stickyNavigation, indent 
       position: "sticky",
       left: 0,
       zIndex: 99,
-      minWidth: "60px",
+      minWidth: "45px",
       color: theme.palette.text.secondary,
       [theme.breakpoints.down("sm")]: {
         writingMode: "vertical-rl"
@@ -7218,7 +7218,7 @@ const ArrowButton = styled(IconButton$1)(({ theme }) => ({
 }));
 const MonthCell = styled("div")(({ theme }) => ({
   position: "relative",
-  height: "100%",
+  // height: '100%',
   minHeight: 100,
   padding: "4px",
   borderRight: `1px solid ${theme.palette.divider}`,
@@ -7233,7 +7233,7 @@ const MonthCell = styled("div")(({ theme }) => ({
     backgroundColor: alpha$1(theme.palette.primary.main, 0.05)
   }
 }));
-const MonthDateHeader = styled("div")(() => ({
+const MonthDateHeader = styled(Button$1)(() => ({
   position: "sticky",
   top: 0,
   zIndex: 2,
@@ -43043,7 +43043,7 @@ const DayTable = ({
   headerHeight
 }) => {
   const { day, resourceFields, direction, hourFormat, timeZone, stickyNavigation, fields } = useStore();
-  const { startHour, endHour, step, cellRenderer, hourRenderer } = day;
+  const { startHour, endHour, step, cellRenderer, hourRenderer, showCurrentDay } = day;
   const { renderedSlots } = usePosition();
   const { headersRef, bodyRef } = useSyncScroll();
   const hFormat = getHourFormat(hourFormat);
@@ -43085,6 +43085,18 @@ const DayTable = ({
         stickyNavigation,
         children: [
           /* @__PURE__ */ jsx("span", { className: "rs__cell rs__time" }),
+          showCurrentDay && /* @__PURE__ */ jsx(Box, { children: /* @__PURE__ */ jsx(
+            Typography$1,
+            {
+              sx: {
+                py: 2,
+                textAlign: "center",
+                fontWeight: "bold",
+                color: "primary.main"
+              },
+              children: dayjs(selectedDate).format("DD dddd")
+            }
+          ) }),
           resources.map((resource) => {
             if (resource.id !== "default") {
               return /* @__PURE__ */ jsxs(
@@ -43610,7 +43622,7 @@ const MonthEvents = memo(
       };
     }, [events, maxVisibleEvents]);
     return /* @__PURE__ */ jsxs(MonthCell, { className: isOutsideMonth ? "outside-month" : "", children: [
-      /* @__PURE__ */ jsx(MonthDateHeader, { children: /* @__PURE__ */ jsx(
+      /* @__PURE__ */ jsx(MonthDateHeader, { onClick: () => onMoreClick == null ? void 0 : onMoreClick(date2), children: /* @__PURE__ */ jsx(
         Typography$1,
         {
           variant: "body2",
@@ -43647,8 +43659,10 @@ const MonthTable = ({ daysList, resource, eachWeekStart }) => {
     resourceFields,
     fields,
     stickyNavigation,
-    onClickMore
+    onClickMore,
+    month
   } = useStore();
+  const dayCount = (month == null ? void 0 : month.weekDays.length) ?? 7;
   const { headersRef, bodyRef } = useSyncScroll();
   const selectedDayjs = dayjs(selectedDate);
   const monthStart = selectedDayjs.startOf("month");
@@ -43704,7 +43718,7 @@ const MonthTable = ({ daysList, resource, eachWeekStart }) => {
     /* @__PURE__ */ jsx(
       TableGrid,
       {
-        days: 7,
+        days: dayCount,
         ref: headersRef,
         indent: "0",
         sticky: "1",
@@ -43715,13 +43729,13 @@ const MonthTable = ({ daysList, resource, eachWeekStart }) => {
             className: "rs__cell rs__header rs__header__center",
             align: "center",
             variant: "body2",
-            children: dayjs(date2).format("ddd")
+            children: dayjs(date2).format("dddd").slice(0, 2)
           },
           i2
         ))
       }
     ),
-    /* @__PURE__ */ jsx(TableGrid, { days: 7, ref: bodyRef, indent: "0", children: eachWeekStart.map((weekStart) => /* @__PURE__ */ jsx("div", { style: { display: "contents" }, children: renderWeek(weekStart) }, dayjs(weekStart).valueOf())) })
+    /* @__PURE__ */ jsx(TableGrid, { days: dayCount, ref: bodyRef, indent: "0", children: eachWeekStart.map((weekStart) => /* @__PURE__ */ jsx("div", { style: { display: "contents" }, children: renderWeek(weekStart) }, dayjs(weekStart).valueOf())) })
   ] });
 };
 const MonthTable$1 = memo(MonthTable);

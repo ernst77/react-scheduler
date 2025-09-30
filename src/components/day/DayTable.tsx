@@ -13,7 +13,7 @@ import { DefaultResource, ProcessedEvent } from '@/index.tsx';
 import useSyncScroll from '../../hooks/useSyncScroll.ts';
 import usePosition from '../../positionManger/usePosition.ts';
 import EventItem from '../events/EventItem.tsx';
-import { Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import Cell from '../common/Cell.tsx';
 import { dayjs } from '@/config/dayjs.ts';
 import { TodayEvents } from '@/components/events/TodayEvents.tsx';
@@ -40,11 +40,10 @@ const DayTable = ({
 }: Props) => {
   const { day, resourceFields, direction, hourFormat, timeZone, stickyNavigation, fields } =
     useStore();
-  const { startHour, endHour, step, cellRenderer, hourRenderer } = day!;
+  const { startHour, endHour, step, cellRenderer, hourRenderer, showCurrentDay } = day!;
 
   const { renderedSlots } = usePosition();
   const { headersRef, bodyRef } = useSyncScroll();
-
   const hFormat = getHourFormat(hourFormat);
 
   const renderMultiDayEvents = (events: ProcessedEvent[], resource: DefaultResource) => {
@@ -87,6 +86,15 @@ const DayTable = ({
         stickyNavigation={stickyNavigation}
       >
         <span className="rs__cell rs__time"></span>
+        {showCurrentDay && <Box>
+          <Typography
+            sx={{
+              py:2,
+              textAlign: 'center',
+              fontWeight: 'bold',
+              color: 'primary.main',
+            }}>{dayjs(selectedDate).format('DD dddd')}</Typography>
+        </Box>}
         {resources.map((resource) => {
           if (resource.id !== 'default') {
             return <span

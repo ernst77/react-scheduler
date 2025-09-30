@@ -60,6 +60,7 @@ export declare interface DayProps {
     hourRenderer?(hour: string): default_2.ReactNode;
     navigation?: boolean;
     dateFormat?: string;
+    showCurrentDay?: boolean;
 }
 
 export declare type DefaultResource = {

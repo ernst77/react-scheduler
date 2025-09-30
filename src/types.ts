@@ -215,6 +215,7 @@ export interface DayProps {
   hourRenderer?(hour: string): React.ReactNode;
   navigation?: boolean;
   dateFormat?: string;
+  showCurrentDay?: boolean;
 }
 
 export interface WeekProps {

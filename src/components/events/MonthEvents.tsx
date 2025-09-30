@@ -37,7 +37,7 @@ export const MonthEvents = memo(
 
     return (
       <MonthCell className={isOutsideMonth ? 'outside-month' : ''}>
-        <MonthDateHeader>
+        <MonthDateHeader onClick={() => onMoreClick?.(date)}>
           <Typography
             variant="body2"
             color={isOutsideMonth ? 'text.disabled' : 'text.primary'}

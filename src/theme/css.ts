@@ -88,15 +88,15 @@ export const TableGrid = styled('div')<{
   display: 'grid',
   gridTemplateColumns:
     +indent > 0
-      ? `80px repeat(${days}, minmax(120px, 1fr))`
-      : `repeat(${days}, minmax(120px, 1fr))`,
+      ? `80px repeat(${days}, minmax(45px, 1fr))`
+      : `repeat(${days}, minmax(45px, 1fr))`,
   overflowX: 'auto',
   overflowY: 'hidden',
   position: sticky === '1' ? 'sticky' : 'relative',
   top: sticky === '1' ? (stickyNavigation ? 36 : 0) : undefined,
   zIndex: sticky === '1' ? 99 : undefined,
   [theme.breakpoints.down('sm')]: {
-    gridTemplateColumns: +indent > 0 ? `60px repeat(${days}, minmax(100px, 1fr))` : '',
+    gridTemplateColumns: +indent > 0 ? `45px repeat(${days}, minmax(50px, 1fr))` : '',
   },
   borderStyle: 'solid',
   borderColor: theme.palette.divider,
@@ -132,7 +132,7 @@ export const TableGrid = styled('div')<{
       position: 'sticky',
       left: 0,
       zIndex: 99,
-      minWidth: '60px',
+      minWidth: '45px',
       color: theme.palette.text.secondary,
       [theme.breakpoints.down('sm')]: {
         writingMode: 'vertical-rl',
@@ -541,7 +541,7 @@ export const ArrowButton = styled(IconButton)(({ theme }) => ({
 
 export const MonthCell = styled('div')(({ theme }) => ({
   position: 'relative',
-  height: '100%',
+  // height: '100%',
   minHeight: 100,
   padding: '4px',
   borderRight: `1px solid ${theme.palette.divider}`,
@@ -559,7 +559,7 @@ export const MonthCell = styled('div')(({ theme }) => ({
   },
 }));
 
-export const MonthDateHeader = styled('div')(() => ({
+export const MonthDateHeader = styled(Button)(() => ({
   position: 'sticky',
   top: 0,
   zIndex: 2,
