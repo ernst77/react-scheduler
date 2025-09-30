@@ -43718,6 +43718,8 @@ const MonthTable = ({ resource, eachWeekStart }) => {
     },
     [monthStart, monthEnd, getEventsForDate, onClickMore, handleGotoDay]
   );
+  console.log("startof", dayjs().startOf("week").format("YYYY-MM-DD"));
+  console.log("weekDays", weekDays);
   return /* @__PURE__ */ jsxs(Fragment, { children: [
     /* @__PURE__ */ jsx(
       TableGrid,

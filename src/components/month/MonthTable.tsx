@@ -85,6 +85,8 @@ const MonthTable = ({resource, eachWeekStart }: Props) => {
     },
     [monthStart, monthEnd, getEventsForDate, onClickMore, handleGotoDay]
   );
+  console.log('startof', dayjs().startOf('week').format('YYYY-MM-DD'));
+  console.log('weekDays', weekDays);
 
   return (
     <>
