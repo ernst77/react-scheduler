@@ -43692,6 +43692,7 @@ const MonthTable = ({ resource, eachWeekStart }) => {
   const renderWeek = useCallback(
     (weekStart, weekDays2) => {
       let days = Array.from({ length: 7 }, (_, i2) => dayjs(weekStart).add(i2, "day").toDate());
+      console.log(days);
       days = days.filter((date2) => weekDays2.includes(dayjs(date2).day()));
       console.log(days);
       return days.map((date2) => {
