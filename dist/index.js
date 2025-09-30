@@ -43754,6 +43754,7 @@ const Month = () => {
   const monthStart = selectedDayjs.startOf("month").toDate();
   const monthEnd = selectedDayjs.endOf("month").toDate();
   const weeks = generateMonthWeeks(monthStart, monthEnd, weekStartOn);
+  console.log("weeks", weeks);
   const days = generateDays(weeks[0], weekDays);
   const events = useMonthEvents(weeks, days);
   const renderContent = useCallback(
