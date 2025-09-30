@@ -56,10 +56,7 @@ const MonthTable = ({resource, eachWeekStart }: Props) => {
 
   const renderWeek = useCallback(
     (weekStart: Date, weekDays: WeekDays[]) => {
-      let days = Array.from({ length: 7 }, (_, i) => dayjs(weekStart).add(i, 'day').toDate());
-      console.log(days);
-      days = days.filter((date) => weekDays.includes(dayjs(date).day()));
-      console.log(days);
+      const days = weekDays.map((day) => dayjs(weekStart).add(-1 + day, 'day').toDate());
 
       return days.map((date) => {
         const dateDayjs = dayjs(date);

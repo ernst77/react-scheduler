@@ -43691,10 +43691,7 @@ const MonthTable = ({ resource, eachWeekStart }) => {
   );
   const renderWeek = useCallback(
     (weekStart, weekDays2) => {
-      let days = Array.from({ length: 7 }, (_, i2) => dayjs(weekStart).add(i2, "day").toDate());
-      console.log(days);
-      days = days.filter((date2) => weekDays2.includes(dayjs(date2).day()));
-      console.log(days);
+      const days = weekDays2.map((day) => dayjs(weekStart).add(-1 + day, "day").toDate());
       return days.map((date2) => {
         const dateDayjs = dayjs(date2);
         const isOutsideMonth = !dateDayjs.isBetween(monthStart, monthEnd, "month", "[]");
