@@ -43732,7 +43732,7 @@ const MonthTable = ({ resource, eachWeekStart }) => {
             className: "rs__cell rs__header rs__header__center",
             align: "center",
             variant: "body2",
-            children: dayjs().startOf("week").add(-1 + day, "day").format("dd").toUpperCase()
+            children: dayjs().startOf("week").add(-1 + day, "day").format("ddd").toUpperCase()
           },
           i2
         ))

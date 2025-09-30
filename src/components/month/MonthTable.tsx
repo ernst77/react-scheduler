@@ -102,7 +102,7 @@ const MonthTable = ({resource, eachWeekStart }: Props) => {
             align="center"
             variant="body2"
           >
-            {dayjs().startOf('week').add(-1 + day, 'day').format('dd').toUpperCase()}
+            {dayjs().startOf('week').add(-1 + day, 'day').format('ddd').toUpperCase()}
           </Typography>
         ))}
       </TableGrid>
