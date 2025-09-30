@@ -43666,6 +43666,7 @@ const MonthTable = ({ daysList, resource, eachWeekStart }) => {
     month
   } = useStore();
   const dayCount = (month == null ? void 0 : month.weekDays.length) ?? 7;
+  const weekDays = (month == null ? void 0 : month.weekDays) ?? [0, 1, 2, 3, 4, 5, 6];
   const { headersRef, bodyRef } = useSyncScroll();
   const selectedDayjs = dayjs(selectedDate);
   const monthStart = selectedDayjs.startOf("month");
@@ -43689,8 +43690,9 @@ const MonthTable = ({ daysList, resource, eachWeekStart }) => {
     [resourcedEvents]
   );
   const renderWeek = useCallback(
-    (weekStart) => {
-      const days = Array.from({ length: 7 }, (_, i2) => dayjs(weekStart).add(i2, "day").toDate());
+    (weekStart, weekDays2) => {
+      let days = Array.from({ length: 7 }, (_, i2) => dayjs(weekStart).add(i2, "day").toDate());
+      days = days.filter((date2) => weekDays2.includes(dayjs(date2).day()));
       return days.map((date2) => {
         const dateDayjs = dayjs(date2);
         const isOutsideMonth = !dateDayjs.isBetween(monthStart, monthEnd, "month", "[]");
@@ -43738,7 +43740,7 @@ const MonthTable = ({ daysList, resource, eachWeekStart }) => {
         ))
       }
     ),
-    /* @__PURE__ */ jsx(TableGrid, { days: dayCount, ref: bodyRef, indent: "0", children: eachWeekStart.map((weekStart) => /* @__PURE__ */ jsx("div", { style: { display: "contents" }, children: renderWeek(weekStart) }, dayjs(weekStart).valueOf())) })
+    /* @__PURE__ */ jsx(TableGrid, { days: dayCount, ref: bodyRef, indent: "0", children: eachWeekStart.map((weekStart) => /* @__PURE__ */ jsx("div", { style: { display: "contents" }, children: renderWeek(weekStart, weekDays) }, dayjs(weekStart).valueOf())) })
   ] });
 };
 const MonthTable$1 = memo(MonthTable);

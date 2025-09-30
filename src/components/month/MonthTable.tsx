@@ -4,7 +4,7 @@ import { TableGrid } from '@/theme/css.ts';
 import useStore from '../../hooks/useStore.ts';
 import { dayjs } from '@/config/dayjs.ts';
 import useSyncScroll from '../../hooks/useSyncScroll.ts';
-import { DefaultResource } from '@/types.ts';
+import { DefaultResource, WeekDays } from '@/types.ts';
 import { getResourcedEvents, sortEventsByTheEarliest } from '../../helpers/generals.tsx';
 import { MonthEvents } from '@/components/events/MonthEvents.tsx';
 
@@ -27,6 +27,7 @@ const MonthTable = ({ daysList, resource, eachWeekStart }: Props) => {
   } = useStore();
 
   const dayCount = month?.weekDays.length ?? 7;
+  const weekDays = month?.weekDays ?? [0, 1, 2, 3, 4, 5, 6];
 
   const { headersRef, bodyRef } = useSyncScroll();
   const selectedDayjs = dayjs(selectedDate);
@@ -54,8 +55,9 @@ const MonthTable = ({ daysList, resource, eachWeekStart }: Props) => {
   );
 
   const renderWeek = useCallback(
-    (weekStart: Date) => {
-      const days = Array.from({ length: 7 }, (_, i) => dayjs(weekStart).add(i, 'day').toDate());
+    (weekStart: Date, weekDays: WeekDays[]) => {
+      let days = Array.from({ length: 7 }, (_, i) => dayjs(weekStart).add(i, 'day').toDate());
+      days = days.filter((date) => weekDays.includes(dayjs(date).day()));
 
       return days.map((date) => {
         const dateDayjs = dayjs(date);
@@ -109,7 +111,7 @@ const MonthTable = ({ daysList, resource, eachWeekStart }: Props) => {
       <TableGrid days={dayCount} ref={bodyRef} indent="0">
         {eachWeekStart.map((weekStart) => (
           <div key={dayjs(weekStart).valueOf()} style={{ display: 'contents' }}>
-            {renderWeek(weekStart)}
+            {renderWeek(weekStart, weekDays)}
           </div>
         ))}
       </TableGrid>
