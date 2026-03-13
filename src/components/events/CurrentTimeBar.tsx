@@ -1,5 +1,4 @@
 import { useEffect, useState, useCallback } from 'react';
-import { BORDER_HEIGHT } from '@/helpers/constants.ts';
 import { getTimeZonedDate } from '../../helpers/generals.tsx';
 import { TimeIndicatorBar } from '@/theme/css.ts';
 import { dayjs } from '@/config/dayjs.ts';
@@ -12,18 +11,16 @@ interface Props {
   zIndex?: number;
 }
 
-const calculateTop = ({ startHour, step, minuteHeight, timeZone }: Props): number => {
+const calculateTop = ({ startHour, minuteHeight, timeZone }: Props): number => {
   const now = getTimeZonedDate(new Date(), timeZone);
   const nowDayjs = dayjs(now);
+  const currentTimeIndicatorHeight = 10; // 10px
 
-  const startTime = nowDayjs.hour(startHour).minute(0);
-
+  const startTime = nowDayjs.clone().hour(startHour).minute(0).second(0);
   const minutesFromTop = nowDayjs.diff(startTime, 'minute');
-  const topSpace = minutesFromTop * minuteHeight;
-  const slotsFromTop = minutesFromTop / step;
-  const borderFactor = slotsFromTop + BORDER_HEIGHT;
 
-  return topSpace + borderFactor;
+  const topSpace = minutesFromTop * minuteHeight;
+  return topSpace - (currentTimeIndicatorHeight/2);
 };
 
 const CurrentTimeBar = ({ startHour, step, minuteHeight, timeZone, zIndex }: Props) => {

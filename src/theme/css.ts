@@ -949,6 +949,8 @@ export const StyledSection = styled(Box)(({ theme }) => ({
 }));
 
 export const StyledButton = styled(Button)(({ theme }) => ({
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-expect-error
   borderRadius: theme.shape.borderRadius * 1.5,
   padding: theme.spacing(1, 3),
   fontWeight: 600,

@@ -2432,7 +2432,7 @@ process.env.NODE_ENV !== "production" ? GlobalStyles$2.propTypes = {
   styles: PropTypes.oneOfType([PropTypes.array, PropTypes.string, PropTypes.object, PropTypes.func])
 } : void 0;
 /**
- * @mui/styled-engine v7.0.2
+ * @mui/styled-engine v7.3.9
  *
  * @license MIT
  * This source code is licensed under the MIT license found in the
@@ -2478,8 +2478,7 @@ var hasRequiredReactIs_production$1;
 function requireReactIs_production$1() {
   if (hasRequiredReactIs_production$1) return reactIs_production$1;
   hasRequiredReactIs_production$1 = 1;
-  var REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler");
-  var REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE = Symbol.for("react.lazy"), REACT_VIEW_TRANSITION_TYPE = Symbol.for("react.view_transition"), REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference");
+  var REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE = Symbol.for("react.lazy"), REACT_VIEW_TRANSITION_TYPE = Symbol.for("react.view_transition"), REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference");
   function typeOf(object2) {
     if ("object" === typeof object2 && null !== object2) {
       var $$typeof = object2.$$typeof;
@@ -2611,8 +2610,7 @@ function requireReactIs_development$1() {
         }
       }
     }
-    var REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler");
-    var REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE = Symbol.for("react.lazy"), REACT_VIEW_TRANSITION_TYPE = Symbol.for("react.view_transition"), REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference");
+    var REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE = Symbol.for("react.lazy"), REACT_VIEW_TRANSITION_TYPE = Symbol.for("react.view_transition"), REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference");
     reactIs_development$1.ContextConsumer = REACT_CONSUMER_TYPE;
     reactIs_development$1.ContextProvider = REACT_CONTEXT_TYPE;
     reactIs_development$1.Element = REACT_ELEMENT_TYPE;
@@ -2822,8 +2820,11 @@ function getContainerQuery(theme, shorthand) {
   const matches = shorthand.match(/^@([^/]+)?\/?(.+)?$/);
   if (!matches) {
     if (process.env.NODE_ENV !== "production") {
-      throw new Error(process.env.NODE_ENV !== "production" ? `MUI: The provided shorthand ${`(${shorthand})`} is invalid. The format should be \`@<breakpoint | number>\` or \`@<breakpoint | number>/<container>\`.
-For example, \`@sm\` or \`@600\` or \`@40rem/sidebar\`.` : formatMuiErrorMessage(18, `(${shorthand})`));
+      throw (
+        /* minify-error */
+        new Error(`MUI: The provided shorthand ${`(${shorthand})`} is invalid. The format should be \`@<breakpoint | number>\` or \`@<breakpoint | number>/<container>\`.
+For example, \`@sm\` or \`@600\` or \`@40rem/sidebar\`.`)
+      );
     }
     return null;
   }
@@ -3745,7 +3746,8 @@ function unstable_createStyleFunctionSx() {
   function styleFunctionSx2(props) {
     const {
       sx,
-      theme = {}
+      theme = {},
+      nested
     } = props || {};
     if (!sx) {
       return null;
@@ -3779,7 +3781,8 @@ function unstable_createStyleFunctionSx() {
               if (objectsHaveSameKeys(breakpointsValues, value)) {
                 css2[styleKey] = styleFunctionSx2({
                   sx: value,
-                  theme
+                  theme,
+                  nested: true
                 });
               } else {
                 css2 = merge(css2, breakpointsValues);
@@ -3790,6 +3793,11 @@ function unstable_createStyleFunctionSx() {
           }
         }
       });
+      if (!nested && theme.modularCssLayers) {
+        return {
+          "@layer sx": sortContainerQueries(theme, removeUnusedBreakpoints(breakpointsKeys, css2))
+        };
+      }
       return sortContainerQueries(theme, removeUnusedBreakpoints(breakpointsKeys, css2));
     }
     return Array.isArray(sx) ? sx.map(traverse) : traverse(sx);
@@ -3872,13 +3880,36 @@ const systemDefaultTheme$1 = createTheme$1();
 function useTheme$1(defaultTheme2 = systemDefaultTheme$1) {
   return useTheme$2(defaultTheme2);
 }
+function wrapGlobalLayer(styles2) {
+  const serialized = internal_serializeStyles(styles2);
+  if (styles2 !== serialized && serialized.styles) {
+    if (!serialized.styles.match(/^@layer\s+[^{]*$/)) {
+      serialized.styles = `@layer global{${serialized.styles}}`;
+    }
+    return serialized;
+  }
+  return styles2;
+}
 function GlobalStyles$1({
   styles: styles2,
   themeId,
   defaultTheme: defaultTheme2 = {}
 }) {
   const upperTheme = useTheme$1(defaultTheme2);
-  const globalStyles = typeof styles2 === "function" ? styles2(themeId ? upperTheme[themeId] || upperTheme : upperTheme) : styles2;
+  const resolvedTheme = themeId ? upperTheme[themeId] || upperTheme : upperTheme;
+  let globalStyles = typeof styles2 === "function" ? styles2(resolvedTheme) : styles2;
+  if (resolvedTheme.modularCssLayers) {
+    if (Array.isArray(globalStyles)) {
+      globalStyles = globalStyles.map((styleArg2) => {
+        if (typeof styleArg2 === "function") {
+          return wrapGlobalLayer(styleArg2(resolvedTheme));
+        }
+        return wrapGlobalLayer(styleArg2);
+      });
+    } else {
+      globalStyles = wrapGlobalLayer(globalStyles);
+    }
+  }
   return /* @__PURE__ */ jsx(GlobalStyles$2, {
     styles: globalStyles
   });
@@ -4060,6 +4091,12 @@ const systemDefaultTheme = createTheme$1();
 function shouldForwardProp(prop) {
   return prop !== "ownerState" && prop !== "theme" && prop !== "sx" && prop !== "as";
 }
+function shallowLayer(serialized, layerName) {
+  if (layerName && serialized && typeof serialized === "object" && serialized.styles && !serialized.styles.startsWith("@layer")) {
+    serialized.styles = `@layer ${layerName}{${String(serialized.styles)}}`;
+  }
+  return serialized;
+}
 function defaultOverridesResolver(slot) {
   if (!slot) {
     return null;
@@ -4069,30 +4106,30 @@ function defaultOverridesResolver(slot) {
 function attachTheme(props, themeId, defaultTheme2) {
   props.theme = isObjectEmpty$1(props.theme) ? defaultTheme2 : props.theme[themeId] || props.theme;
 }
-function processStyle(props, style2) {
+function processStyle(props, style2, layerName) {
   const resolvedStyle = typeof style2 === "function" ? style2(props) : style2;
   if (Array.isArray(resolvedStyle)) {
-    return resolvedStyle.flatMap((subStyle) => processStyle(props, subStyle));
+    return resolvedStyle.flatMap((subStyle) => processStyle(props, subStyle, layerName));
   }
   if (Array.isArray(resolvedStyle == null ? void 0 : resolvedStyle.variants)) {
     let rootStyle;
     if (resolvedStyle.isProcessed) {
-      rootStyle = resolvedStyle.style;
+      rootStyle = layerName ? shallowLayer(resolvedStyle.style, layerName) : resolvedStyle.style;
     } else {
       const {
         variants,
         ...otherStyles
       } = resolvedStyle;
-      rootStyle = otherStyles;
+      rootStyle = layerName ? shallowLayer(internal_serializeStyles(otherStyles), layerName) : otherStyles;
     }
-    return processStyleVariants(props, resolvedStyle.variants, [rootStyle]);
+    return processStyleVariants(props, resolvedStyle.variants, [rootStyle], layerName);
   }
   if (resolvedStyle == null ? void 0 : resolvedStyle.isProcessed) {
-    return resolvedStyle.style;
+    return layerName ? shallowLayer(internal_serializeStyles(resolvedStyle.style), layerName) : resolvedStyle.style;
   }
-  return resolvedStyle;
+  return layerName ? shallowLayer(internal_serializeStyles(resolvedStyle), layerName) : resolvedStyle;
 }
-function processStyleVariants(props, variants, results = []) {
+function processStyleVariants(props, variants, results = [], layerName = void 0) {
   var _a;
   let mergedState;
   variantLoop: for (let i2 = 0; i2 < variants.length; i2 += 1) {
@@ -4119,9 +4156,9 @@ function processStyleVariants(props, variants, results = []) {
         ...props.ownerState,
         ownerState: props.ownerState
       });
-      results.push(variant.style(mergedState));
+      results.push(layerName ? shallowLayer(internal_serializeStyles(variant.style(mergedState)), layerName) : variant.style(mergedState));
     } else {
-      results.push(variant.style);
+      results.push(layerName ? shallowLayer(internal_serializeStyles(variant.style), layerName) : variant.style);
     }
   }
   return results;
@@ -4148,6 +4185,7 @@ function createStyled(input = {}) {
       overridesResolver: overridesResolver2 = defaultOverridesResolver(lowercaseFirstLetter(componentSlot)),
       ...options
     } = inputOptions;
+    const layerName = componentName && componentName.startsWith("Mui") || !!componentSlot ? "components" : "custom";
     const skipVariantsResolver = inputSkipVariantsResolver !== void 0 ? inputSkipVariantsResolver : (
       // TODO v6: remove `Root` in the next major release
       // For more details: https://github.com/mui/material-ui/pull/37908
@@ -4168,18 +4206,21 @@ function createStyled(input = {}) {
       ...options
     });
     const transformStyle = (style2) => {
-      if (typeof style2 === "function" && style2.__emotion_real !== style2) {
+      if (style2.__emotion_real === style2) {
+        return style2;
+      }
+      if (typeof style2 === "function") {
         return function styleFunctionProcessor(props) {
-          return processStyle(props, style2);
+          return processStyle(props, style2, props.theme.modularCssLayers ? layerName : void 0);
         };
       }
       if (isPlainObject$1(style2)) {
         const serialized = preprocessStyles(style2);
-        if (!serialized.variants) {
-          return serialized.style;
-        }
         return function styleObjectProcessor(props) {
-          return processStyle(props, serialized);
+          if (!serialized.variants) {
+            return props.theme.modularCssLayers ? shallowLayer(serialized.style, layerName) : serialized.style;
+          }
+          return processStyle(props, serialized, props.theme.modularCssLayers ? layerName : void 0);
         };
       }
       return style2;
@@ -4199,7 +4240,7 @@ function createStyled(input = {}) {
           }
           const resolvedStyleOverrides = {};
           for (const slotKey in styleOverrides) {
-            resolvedStyleOverrides[slotKey] = processStyle(props, styleOverrides[slotKey]);
+            resolvedStyleOverrides[slotKey] = processStyle(props, styleOverrides[slotKey], props.theme.modularCssLayers ? "theme" : void 0);
           }
           return overridesResolver2(props, resolvedStyleOverrides);
         });
@@ -4212,7 +4253,7 @@ function createStyled(input = {}) {
           if (!themeVariants) {
             return null;
           }
-          return processStyleVariants(props, themeVariants);
+          return processStyleVariants(props, themeVariants, [], props.theme.modularCssLayers ? "theme" : void 0);
         });
       }
       if (!skipSx) {
@@ -4279,7 +4320,7 @@ function lowercaseFirstLetter(string2) {
   }
   return string2.charAt(0).toLowerCase() + string2.slice(1);
 }
-function resolveProps(defaultProps2, props) {
+function resolveProps(defaultProps2, props, mergeClassNameAndStyle = false) {
   const output = {
     ...props
   };
@@ -4305,10 +4346,17 @@ function resolveProps(defaultProps2, props) {
           for (const slotKey in defaultSlotProps) {
             if (Object.prototype.hasOwnProperty.call(defaultSlotProps, slotKey)) {
               const slotPropName = slotKey;
-              output[propName][slotPropName] = resolveProps(defaultSlotProps[slotPropName], slotProps[slotPropName]);
+              output[propName][slotPropName] = resolveProps(defaultSlotProps[slotPropName], slotProps[slotPropName], mergeClassNameAndStyle);
             }
           }
         }
+      } else if (propName === "className" && mergeClassNameAndStyle && props.className) {
+        output.className = clsx(defaultProps2 == null ? void 0 : defaultProps2.className, props == null ? void 0 : props.className);
+      } else if (propName === "style" && mergeClassNameAndStyle && props.style) {
+        output.style = {
+          ...defaultProps2 == null ? void 0 : defaultProps2.style,
+          ...props == null ? void 0 : props.style
+        };
       } else if (output[propName] === void 0) {
         output[propName] = defaultProps2[propName];
       }
@@ -4431,6 +4479,9 @@ function unstable_createUseMediaQuery(params = {}) {
     }
     let query = typeof queryInput === "function" ? queryInput(theme) : queryInput;
     query = query.replace(/^@media( ?)/m, "");
+    if (query.includes("print")) {
+      console.warn([`MUI: You have provided a \`print\` query to the \`useMediaQuery\` hook.`, "Using the print media query to modify print styles can lead to unexpected results.", "Consider using the `displayPrint` field in the `sx` prop instead.", "More information about `displayPrint` on our docs: https://mui.com/system/display/#display-in-print."].join("\n"));
+    }
     const useMediaQueryImplementation = maybeReactUseSyncExternalStore !== void 0 ? useMediaQueryNew : useMediaQueryOld;
     const match = useMediaQueryImplementation(query, defaultMatches, matchMedia, ssrMatchMedia, noSsr);
     if (process.env.NODE_ENV !== "production") {
@@ -4649,68 +4700,6 @@ function private_safeEmphasize(color2, coefficient, warning) {
     return color2;
   }
 }
-function chainPropTypes(propType1, propType2) {
-  if (process.env.NODE_ENV === "production") {
-    return () => null;
-  }
-  return function validate(...args) {
-    return propType1(...args) || propType2(...args);
-  };
-}
-function isClassComponent$1(elementType) {
-  const {
-    prototype = {}
-  } = elementType;
-  return Boolean(prototype.isReactComponent);
-}
-function acceptingRef(props, propName, componentName, location, propFullName) {
-  const element = props[propName];
-  const safePropName = propFullName || propName;
-  if (element == null || // When server-side rendering React doesn't warn either.
-  // This is not an accurate check for SSR.
-  // This is only in place for Emotion compat.
-  // TODO: Revisit once https://github.com/facebook/react/issues/20047 is resolved.
-  typeof window === "undefined") {
-    return null;
-  }
-  let warningHint;
-  const elementType = element.type;
-  if (typeof elementType === "function" && !isClassComponent$1(elementType)) {
-    warningHint = "Did you accidentally use a plain function component for an element instead?";
-  }
-  if (warningHint !== void 0) {
-    return new Error(`Invalid ${location} \`${safePropName}\` supplied to \`${componentName}\`. Expected an element that can hold a ref. ${warningHint} For more information see https://mui.com/r/caveat-with-refs-guide`);
-  }
-  return null;
-}
-const elementAcceptingRef = chainPropTypes(PropTypes.element, acceptingRef);
-elementAcceptingRef.isRequired = chainPropTypes(PropTypes.element.isRequired, acceptingRef);
-function isClassComponent(elementType) {
-  const {
-    prototype = {}
-  } = elementType;
-  return Boolean(prototype.isReactComponent);
-}
-function elementTypeAcceptingRef(props, propName, componentName, location, propFullName) {
-  const propValue = props[propName];
-  const safePropName = propFullName || propName;
-  if (propValue == null || // When server-side rendering React doesn't warn either.
-  // This is not an accurate check for SSR.
-  // This is only in place for emotion compat.
-  // TODO: Revisit once https://github.com/facebook/react/issues/20047 is resolved.
-  typeof window === "undefined") {
-    return null;
-  }
-  let warningHint;
-  if (typeof propValue === "function" && !isClassComponent(propValue)) {
-    warningHint = "Did you accidentally provide a plain function component instead?";
-  }
-  if (warningHint !== void 0) {
-    return new Error(`Invalid ${location} \`${safePropName}\` supplied to \`${componentName}\`. Expected an element type that can hold a ref. ${warningHint} For more information see https://mui.com/r/caveat-with-refs-guide`);
-  }
-  return null;
-}
-const elementTypeAcceptingRef$1 = chainPropTypes(PropTypes.elementType, elementTypeAcceptingRef);
 const specialProperty = "exact-prop: ​";
 function exactProp(propTypes2) {
   if (process.env.NODE_ENV === "production") {
@@ -4726,451 +4715,6 @@ function exactProp(propTypes2) {
       return null;
     }
   };
-}
-function HTMLElementType(props, propName, componentName, location, propFullName) {
-  if (process.env.NODE_ENV === "production") {
-    return null;
-  }
-  const propValue = props[propName];
-  const safePropName = propFullName || propName;
-  if (propValue == null) {
-    return null;
-  }
-  if (propValue && propValue.nodeType !== 1) {
-    return new Error(`Invalid ${location} \`${safePropName}\` supplied to \`${componentName}\`. Expected an HTMLElement.`);
-  }
-  return null;
-}
-const refType = PropTypes.oneOfType([PropTypes.func, PropTypes.object]);
-function createChainedFunction(...funcs) {
-  return funcs.reduce((acc, func) => {
-    if (func == null) {
-      return acc;
-    }
-    return function chainedFunction(...args) {
-      acc.apply(this, args);
-      func.apply(this, args);
-    };
-  }, () => {
-  });
-}
-function debounce$1(func, wait = 166) {
-  let timeout2;
-  function debounced(...args) {
-    const later = () => {
-      func.apply(this, args);
-    };
-    clearTimeout(timeout2);
-    timeout2 = setTimeout(later, wait);
-  }
-  debounced.clear = () => {
-    clearTimeout(timeout2);
-  };
-  return debounced;
-}
-function isMuiElement(element, muiNames) {
-  var _a, _b, _c;
-  return /* @__PURE__ */ React.isValidElement(element) && muiNames.indexOf(
-    // For server components `muiName` is avaialble in element.type._payload.value.muiName
-    // relevant info - https://github.com/facebook/react/blob/2807d781a08db8e9873687fccc25c0f12b4fb3d4/packages/react/src/ReactLazy.js#L45
-    // eslint-disable-next-line no-underscore-dangle
-    element.type.muiName ?? ((_c = (_b = (_a = element.type) == null ? void 0 : _a._payload) == null ? void 0 : _b.value) == null ? void 0 : _c.muiName)
-  ) !== -1;
-}
-function ownerDocument(node) {
-  return node && node.ownerDocument || document;
-}
-function ownerWindow(node) {
-  const doc = ownerDocument(node);
-  return doc.defaultView || window;
-}
-function setRef(ref, value) {
-  if (typeof ref === "function") {
-    ref(value);
-  } else if (ref) {
-    ref.current = value;
-  }
-}
-let globalId = 0;
-function useGlobalId(idOverride) {
-  const [defaultId, setDefaultId] = React.useState(idOverride);
-  const id = idOverride || defaultId;
-  React.useEffect(() => {
-    if (defaultId == null) {
-      globalId += 1;
-      setDefaultId(`mui-${globalId}`);
-    }
-  }, [defaultId]);
-  return id;
-}
-const safeReact = {
-  ...React
-};
-const maybeReactUseId = safeReact.useId;
-function useId(idOverride) {
-  if (maybeReactUseId !== void 0) {
-    const reactId = maybeReactUseId();
-    return idOverride ?? reactId;
-  }
-  return useGlobalId(idOverride);
-}
-function unsupportedProp(props, propName, componentName, location, propFullName) {
-  if (process.env.NODE_ENV === "production") {
-    return null;
-  }
-  const propFullNameSafe = propFullName || propName;
-  if (typeof props[propName] !== "undefined") {
-    return new Error(`The prop \`${propFullNameSafe}\` is not supported. Please remove it.`);
-  }
-  return null;
-}
-function useControlled({
-  controlled,
-  default: defaultProp,
-  name,
-  state = "value"
-}) {
-  const {
-    current: isControlled
-  } = React.useRef(controlled !== void 0);
-  const [valueState, setValue] = React.useState(defaultProp);
-  const value = isControlled ? controlled : valueState;
-  if (process.env.NODE_ENV !== "production") {
-    React.useEffect(() => {
-      if (isControlled !== (controlled !== void 0)) {
-        console.error([`MUI: A component is changing the ${isControlled ? "" : "un"}controlled ${state} state of ${name} to be ${isControlled ? "un" : ""}controlled.`, "Elements should not switch from uncontrolled to controlled (or vice versa).", `Decide between using a controlled or uncontrolled ${name} element for the lifetime of the component.`, "The nature of the state is determined during the first render. It's considered controlled if the value is not `undefined`.", "More info: https://fb.me/react-controlled-components"].join("\n"));
-      }
-    }, [state, name, controlled]);
-    const {
-      current: defaultValue
-    } = React.useRef(defaultProp);
-    React.useEffect(() => {
-      if (!isControlled && !Object.is(defaultValue, defaultProp)) {
-        console.error([`MUI: A component is changing the default ${state} state of an uncontrolled ${name} after being initialized. To suppress this warning opt to use a controlled ${name}.`].join("\n"));
-      }
-    }, [JSON.stringify(defaultProp)]);
-  }
-  const setValueIfUncontrolled = React.useCallback((newValue) => {
-    if (!isControlled) {
-      setValue(newValue);
-    }
-  }, []);
-  return [value, setValueIfUncontrolled];
-}
-function useEventCallback(fn2) {
-  const ref = React.useRef(fn2);
-  useEnhancedEffect(() => {
-    ref.current = fn2;
-  });
-  return React.useRef((...args) => (
-    // @ts-expect-error hide `this`
-    (0, ref.current)(...args)
-  )).current;
-}
-function useForkRef(...refs) {
-  const cleanupRef = React.useRef(void 0);
-  const refEffect = React.useCallback((instance) => {
-    const cleanups = refs.map((ref) => {
-      if (ref == null) {
-        return null;
-      }
-      if (typeof ref === "function") {
-        const refCallback = ref;
-        const refCleanup = refCallback(instance);
-        return typeof refCleanup === "function" ? refCleanup : () => {
-          refCallback(null);
-        };
-      }
-      ref.current = instance;
-      return () => {
-        ref.current = null;
-      };
-    });
-    return () => {
-      cleanups.forEach((refCleanup) => refCleanup == null ? void 0 : refCleanup());
-    };
-  }, refs);
-  return React.useMemo(() => {
-    if (refs.every((ref) => ref == null)) {
-      return null;
-    }
-    return (value) => {
-      if (cleanupRef.current) {
-        cleanupRef.current();
-        cleanupRef.current = void 0;
-      }
-      if (value != null) {
-        cleanupRef.current = refEffect(value);
-      }
-    };
-  }, refs);
-}
-const UNINITIALIZED = {};
-function useLazyRef(init, initArg) {
-  const ref = React.useRef(UNINITIALIZED);
-  if (ref.current === UNINITIALIZED) {
-    ref.current = init(initArg);
-  }
-  return ref;
-}
-const EMPTY = [];
-function useOnMount(fn2) {
-  React.useEffect(fn2, EMPTY);
-}
-class Timeout {
-  constructor() {
-    __publicField(this, "currentId", null);
-    __publicField(this, "clear", () => {
-      if (this.currentId !== null) {
-        clearTimeout(this.currentId);
-        this.currentId = null;
-      }
-    });
-    __publicField(this, "disposeEffect", () => {
-      return this.clear;
-    });
-  }
-  static create() {
-    return new Timeout();
-  }
-  /**
-   * Executes `fn` after `delay`, clearing any previously scheduled call.
-   */
-  start(delay, fn2) {
-    this.clear();
-    this.currentId = setTimeout(() => {
-      this.currentId = null;
-      fn2();
-    }, delay);
-  }
-}
-function useTimeout() {
-  const timeout2 = useLazyRef(Timeout.create).current;
-  useOnMount(timeout2.disposeEffect);
-  return timeout2;
-}
-function isFocusVisible(element) {
-  try {
-    return element.matches(":focus-visible");
-  } catch (error) {
-    if (process.env.NODE_ENV !== "production" && !/jsdom/.test(window.navigator.userAgent)) {
-      console.warn(["MUI: The `:focus-visible` pseudo class is not supported in this browser.", "Some components rely on this feature to work properly."].join("\n"));
-    }
-  }
-  return false;
-}
-function getScrollbarSize(win = window) {
-  const documentWidth = win.document.documentElement.clientWidth;
-  return win.innerWidth - documentWidth;
-}
-const visuallyHidden = {
-  border: 0,
-  clip: "rect(0 0 0 0)",
-  height: "1px",
-  margin: "-1px",
-  overflow: "hidden",
-  padding: 0,
-  position: "absolute",
-  whiteSpace: "nowrap",
-  width: "1px"
-};
-function getTypeByValue(value) {
-  const valueType = typeof value;
-  switch (valueType) {
-    case "number":
-      if (Number.isNaN(value)) {
-        return "NaN";
-      }
-      if (!Number.isFinite(value)) {
-        return "Infinity";
-      }
-      if (value !== Math.floor(value)) {
-        return "float";
-      }
-      return "number";
-    case "object":
-      if (value === null) {
-        return "null";
-      }
-      return value.constructor.name;
-    default:
-      return valueType;
-  }
-}
-function requiredInteger(props, propName, componentName, location) {
-  const propValue = props[propName];
-  if (propValue == null || !Number.isInteger(propValue)) {
-    const propType = getTypeByValue(propValue);
-    return new RangeError(`Invalid ${location} \`${propName}\` of type \`${propType}\` supplied to \`${componentName}\`, expected \`integer\`.`);
-  }
-  return null;
-}
-function validator(props, propName, ...other) {
-  const propValue = props[propName];
-  if (propValue === void 0) {
-    return null;
-  }
-  return requiredInteger(props, propName, ...other);
-}
-function validatorNoop() {
-  return null;
-}
-validator.isRequired = requiredInteger;
-validatorNoop.isRequired = validatorNoop;
-const integerPropType = process.env.NODE_ENV === "production" ? validatorNoop : validator;
-function composeClasses(slots, getUtilityClass, classes = void 0) {
-  const output = {};
-  for (const slotName in slots) {
-    const slot = slots[slotName];
-    let buffer = "";
-    let start2 = true;
-    for (let i2 = 0; i2 < slot.length; i2 += 1) {
-      const value = slot[i2];
-      if (value) {
-        buffer += (start2 === true ? "" : " ") + getUtilityClass(value);
-        start2 = false;
-        if (classes && classes[value]) {
-          buffer += " " + classes[value];
-        }
-      }
-    }
-    output[slotName] = buffer;
-  }
-  return output;
-}
-function isHostComponent$1(element) {
-  return typeof element === "string";
-}
-function appendOwnerState(elementType, otherProps, ownerState) {
-  if (elementType === void 0 || isHostComponent$1(elementType)) {
-    return otherProps;
-  }
-  return {
-    ...otherProps,
-    ownerState: {
-      ...otherProps.ownerState,
-      ...ownerState
-    }
-  };
-}
-function extractEventHandlers(object2, excludeKeys = []) {
-  if (object2 === void 0) {
-    return {};
-  }
-  const result = {};
-  Object.keys(object2).filter((prop) => prop.match(/^on[A-Z]/) && typeof object2[prop] === "function" && !excludeKeys.includes(prop)).forEach((prop) => {
-    result[prop] = object2[prop];
-  });
-  return result;
-}
-function omitEventHandlers(object2) {
-  if (object2 === void 0) {
-    return {};
-  }
-  const result = {};
-  Object.keys(object2).filter((prop) => !(prop.match(/^on[A-Z]/) && typeof object2[prop] === "function")).forEach((prop) => {
-    result[prop] = object2[prop];
-  });
-  return result;
-}
-function mergeSlotProps$1(parameters) {
-  const {
-    getSlotProps,
-    additionalProps,
-    externalSlotProps,
-    externalForwardedProps,
-    className
-  } = parameters;
-  if (!getSlotProps) {
-    const joinedClasses2 = clsx(additionalProps == null ? void 0 : additionalProps.className, className, externalForwardedProps == null ? void 0 : externalForwardedProps.className, externalSlotProps == null ? void 0 : externalSlotProps.className);
-    const mergedStyle2 = {
-      ...additionalProps == null ? void 0 : additionalProps.style,
-      ...externalForwardedProps == null ? void 0 : externalForwardedProps.style,
-      ...externalSlotProps == null ? void 0 : externalSlotProps.style
-    };
-    const props2 = {
-      ...additionalProps,
-      ...externalForwardedProps,
-      ...externalSlotProps
-    };
-    if (joinedClasses2.length > 0) {
-      props2.className = joinedClasses2;
-    }
-    if (Object.keys(mergedStyle2).length > 0) {
-      props2.style = mergedStyle2;
-    }
-    return {
-      props: props2,
-      internalRef: void 0
-    };
-  }
-  const eventHandlers = extractEventHandlers({
-    ...externalForwardedProps,
-    ...externalSlotProps
-  });
-  const componentsPropsWithoutEventHandlers = omitEventHandlers(externalSlotProps);
-  const otherPropsWithoutEventHandlers = omitEventHandlers(externalForwardedProps);
-  const internalSlotProps = getSlotProps(eventHandlers);
-  const joinedClasses = clsx(internalSlotProps == null ? void 0 : internalSlotProps.className, additionalProps == null ? void 0 : additionalProps.className, className, externalForwardedProps == null ? void 0 : externalForwardedProps.className, externalSlotProps == null ? void 0 : externalSlotProps.className);
-  const mergedStyle = {
-    ...internalSlotProps == null ? void 0 : internalSlotProps.style,
-    ...additionalProps == null ? void 0 : additionalProps.style,
-    ...externalForwardedProps == null ? void 0 : externalForwardedProps.style,
-    ...externalSlotProps == null ? void 0 : externalSlotProps.style
-  };
-  const props = {
-    ...internalSlotProps,
-    ...additionalProps,
-    ...otherPropsWithoutEventHandlers,
-    ...componentsPropsWithoutEventHandlers
-  };
-  if (joinedClasses.length > 0) {
-    props.className = joinedClasses;
-  }
-  if (Object.keys(mergedStyle).length > 0) {
-    props.style = mergedStyle;
-  }
-  return {
-    props,
-    internalRef: internalSlotProps.ref
-  };
-}
-function resolveComponentProps(componentProps, ownerState, slotState) {
-  if (typeof componentProps === "function") {
-    return componentProps(ownerState, slotState);
-  }
-  return componentProps;
-}
-function useSlotProps(parameters) {
-  var _a;
-  const {
-    elementType,
-    externalSlotProps,
-    ownerState,
-    skipResolvingSlotProps = false,
-    ...other
-  } = parameters;
-  const resolvedComponentsProps = skipResolvingSlotProps ? {} : resolveComponentProps(externalSlotProps, ownerState);
-  const {
-    props: mergedProps,
-    internalRef
-  } = mergeSlotProps$1({
-    ...other,
-    externalSlotProps: resolvedComponentsProps
-  });
-  const ref = useForkRef(internalRef, resolvedComponentsProps == null ? void 0 : resolvedComponentsProps.ref, (_a = parameters.additionalProps) == null ? void 0 : _a.ref);
-  const props = appendOwnerState(elementType, {
-    ...mergedProps,
-    ref
-  }, ownerState);
-  return props;
-}
-function getReactElementRef(element) {
-  var _a;
-  if (parseInt(React.version, 10) >= 19) {
-    return ((_a = element == null ? void 0 : element.props) == null ? void 0 : _a.ref) || null;
-  }
-  return (element == null ? void 0 : element.ref) || null;
 }
 const RtlContext = /* @__PURE__ */ React.createContext();
 process.env.NODE_ENV !== "production" ? {
@@ -5207,10 +4751,10 @@ function getThemeProps(params) {
   }
   const config2 = theme.components[name];
   if (config2.defaultProps) {
-    return resolveProps(config2.defaultProps, props);
+    return resolveProps(config2.defaultProps, props, theme.components.mergeClassNameAndStyle);
   }
   if (!config2.styleOverrides && !config2.variants) {
-    return resolveProps(config2, props);
+    return resolveProps(config2, props, theme.components.mergeClassNameAndStyle);
   }
   return props;
 }
@@ -5226,6 +4770,29 @@ function useDefaultProps$1({
       components: ctx
     }
   });
+}
+let globalId = 0;
+function useGlobalId(idOverride) {
+  const [defaultId, setDefaultId] = React.useState(idOverride);
+  const id = idOverride || defaultId;
+  React.useEffect(() => {
+    if (defaultId == null) {
+      globalId += 1;
+      setDefaultId(`mui-${globalId}`);
+    }
+  }, [defaultId]);
+  return id;
+}
+const safeReact = {
+  ...React
+};
+const maybeReactUseId = safeReact.useId;
+function useId(idOverride) {
+  if (maybeReactUseId !== void 0) {
+    const reactId = maybeReactUseId();
+    return idOverride ?? reactId;
+  }
+  return useGlobalId(idOverride);
 }
 const arg = {
   theme: void 0
@@ -5342,7 +4909,8 @@ function prepareCssVars(theme, parserConfig = {}) {
   const {
     getSelector = defaultGetSelector2,
     disableCssColorScheme,
-    colorSchemeSelector: selector
+    colorSchemeSelector: selector,
+    enableContrastVars
   } = parserConfig;
   const {
     colorSchemes = {},
@@ -5479,6 +5047,17 @@ function prepareCssVars(theme, parserConfig = {}) {
         ...finalCss
       }), finalCss);
     });
+    if (enableContrastVars) {
+      stylesheets.push({
+        ":root": {
+          // use double underscore to indicate that these are private variables
+          "--__l-threshold": "0.7",
+          "--__l": "clamp(0, (l / var(--__l-threshold) - 1) * -infinity, 1)",
+          "--__a": "clamp(0.87, (l / var(--__l-threshold) - 1) * -infinity, 1)"
+          // 0.87 is the default alpha value for black text.
+        }
+      });
+    }
     return stylesheets;
   };
   return {
@@ -5511,6 +5090,35 @@ function createGetColorSchemeSelector(selector) {
     }
     return "&";
   };
+}
+function composeClasses(slots, getUtilityClass, classes = void 0) {
+  const output = {};
+  for (const slotName in slots) {
+    const slot = slots[slotName];
+    let buffer = "";
+    let start2 = true;
+    for (let i2 = 0; i2 < slot.length; i2 += 1) {
+      const value = slot[i2];
+      if (value) {
+        buffer += (start2 === true ? "" : " ") + getUtilityClass(value);
+        start2 = false;
+        if (classes && classes[value]) {
+          buffer += " " + classes[value];
+        }
+      }
+    }
+    output[slotName] = buffer;
+  }
+  return output;
+}
+function isMuiElement(element, muiNames) {
+  var _a, _b, _c;
+  return /* @__PURE__ */ React.isValidElement(element) && muiNames.indexOf(
+    // For server components `muiName` is available in element.type._payload.value.muiName
+    // relevant info - https://github.com/facebook/react/blob/2807d781a08db8e9873687fccc25c0f12b4fb3d4/packages/react/src/ReactLazy.js#L45
+    // eslint-disable-next-line no-underscore-dangle
+    element.type.muiName ?? ((_c = (_b = (_a = element.type) == null ? void 0 : _a._payload) == null ? void 0 : _b.value) == null ? void 0 : _c.muiName)
+  ) !== -1;
 }
 const common = {
   black: "#000",
@@ -7566,6 +7174,7 @@ const StyledSection = styled(Box)(({ theme }) => ({
   }
 }));
 const StyledButton = styled(Button$1)(({ theme }) => ({
+  // @ts-ignore
   borderRadius: theme.shape.borderRadius * 1.5,
   padding: theme.spacing(1, 3),
   fontWeight: 600
@@ -7615,6 +7224,465 @@ const useStore = () => {
   }
   return context;
 };
+function chainPropTypes(propType1, propType2) {
+  if (process.env.NODE_ENV === "production") {
+    return () => null;
+  }
+  return function validate(...args) {
+    return propType1(...args) || propType2(...args);
+  };
+}
+function isClassComponent$1(elementType) {
+  const {
+    prototype = {}
+  } = elementType;
+  return Boolean(prototype.isReactComponent);
+}
+function acceptingRef(props, propName, componentName, location, propFullName) {
+  const element = props[propName];
+  const safePropName = propFullName || propName;
+  if (element == null || // When server-side rendering React doesn't warn either.
+  // This is not an accurate check for SSR.
+  // This is only in place for Emotion compat.
+  // TODO: Revisit once https://github.com/facebook/react/issues/20047 is resolved.
+  typeof window === "undefined") {
+    return null;
+  }
+  let warningHint;
+  const elementType = element.type;
+  if (typeof elementType === "function" && !isClassComponent$1(elementType)) {
+    warningHint = "Did you accidentally use a plain function component for an element instead?";
+  }
+  if (warningHint !== void 0) {
+    return new Error(`Invalid ${location} \`${safePropName}\` supplied to \`${componentName}\`. Expected an element that can hold a ref. ${warningHint} For more information see https://mui.com/r/caveat-with-refs-guide`);
+  }
+  return null;
+}
+const elementAcceptingRef = chainPropTypes(PropTypes.element, acceptingRef);
+elementAcceptingRef.isRequired = chainPropTypes(PropTypes.element.isRequired, acceptingRef);
+function isClassComponent(elementType) {
+  const {
+    prototype = {}
+  } = elementType;
+  return Boolean(prototype.isReactComponent);
+}
+function elementTypeAcceptingRef(props, propName, componentName, location, propFullName) {
+  const propValue = props[propName];
+  const safePropName = propFullName || propName;
+  if (propValue == null || // When server-side rendering React doesn't warn either.
+  // This is not an accurate check for SSR.
+  // This is only in place for emotion compat.
+  // TODO: Revisit once https://github.com/facebook/react/issues/20047 is resolved.
+  typeof window === "undefined") {
+    return null;
+  }
+  let warningHint;
+  if (typeof propValue === "function" && !isClassComponent(propValue)) {
+    warningHint = "Did you accidentally provide a plain function component instead?";
+  }
+  if (propValue === React.Fragment) {
+    warningHint = "Did you accidentally provide a React.Fragment instead?";
+  }
+  if (warningHint !== void 0) {
+    return new Error(`Invalid ${location} \`${safePropName}\` supplied to \`${componentName}\`. Expected an element type that can hold a ref. ${warningHint} For more information see https://mui.com/r/caveat-with-refs-guide`);
+  }
+  return null;
+}
+const elementTypeAcceptingRef$1 = chainPropTypes(PropTypes.elementType, elementTypeAcceptingRef);
+function HTMLElementType(props, propName, componentName, location, propFullName) {
+  if (process.env.NODE_ENV === "production") {
+    return null;
+  }
+  const propValue = props[propName];
+  const safePropName = propFullName || propName;
+  if (propValue == null) {
+    return null;
+  }
+  if (propValue && propValue.nodeType !== 1) {
+    return new Error(`Invalid ${location} \`${safePropName}\` supplied to \`${componentName}\`. Expected an HTMLElement.`);
+  }
+  return null;
+}
+const refType = PropTypes.oneOfType([PropTypes.func, PropTypes.object]);
+function createChainedFunction(...funcs) {
+  return funcs.reduce((acc, func) => {
+    if (func == null) {
+      return acc;
+    }
+    return function chainedFunction(...args) {
+      acc.apply(this, args);
+      func.apply(this, args);
+    };
+  }, () => {
+  });
+}
+function debounce$1(func, wait = 166) {
+  let timeout2;
+  function debounced(...args) {
+    const later = () => {
+      func.apply(this, args);
+    };
+    clearTimeout(timeout2);
+    timeout2 = setTimeout(later, wait);
+  }
+  debounced.clear = () => {
+    clearTimeout(timeout2);
+  };
+  return debounced;
+}
+function ownerDocument(node) {
+  return node && node.ownerDocument || document;
+}
+function ownerWindow(node) {
+  const doc = ownerDocument(node);
+  return doc.defaultView || window;
+}
+function setRef(ref, value) {
+  if (typeof ref === "function") {
+    ref(value);
+  } else if (ref) {
+    ref.current = value;
+  }
+}
+function unsupportedProp(props, propName, componentName, location, propFullName) {
+  if (process.env.NODE_ENV === "production") {
+    return null;
+  }
+  const propFullNameSafe = propFullName || propName;
+  if (typeof props[propName] !== "undefined") {
+    return new Error(`The prop \`${propFullNameSafe}\` is not supported. Please remove it.`);
+  }
+  return null;
+}
+function useControlled(props) {
+  const {
+    controlled,
+    default: defaultProp,
+    name,
+    state = "value"
+  } = props;
+  const {
+    current: isControlled
+  } = React.useRef(controlled !== void 0);
+  const [valueState, setValue] = React.useState(defaultProp);
+  const value = isControlled ? controlled : valueState;
+  if (process.env.NODE_ENV !== "production") {
+    React.useEffect(() => {
+      if (isControlled !== (controlled !== void 0)) {
+        console.error([`MUI: A component is changing the ${isControlled ? "" : "un"}controlled ${state} state of ${name} to be ${isControlled ? "un" : ""}controlled.`, "Elements should not switch from uncontrolled to controlled (or vice versa).", `Decide between using a controlled or uncontrolled ${name} element for the lifetime of the component.`, "The nature of the state is determined during the first render. It's considered controlled if the value is not `undefined`.", "More info: https://fb.me/react-controlled-components"].join("\n"));
+      }
+    }, [state, name, controlled]);
+    const {
+      current: defaultValue
+    } = React.useRef(defaultProp);
+    React.useEffect(() => {
+      if (!isControlled && JSON.stringify(defaultProp) !== JSON.stringify(defaultValue)) {
+        console.error([`MUI: A component is changing the default ${state} state of an uncontrolled ${name} after being initialized. To suppress this warning opt to use a controlled ${name}.`].join("\n"));
+      }
+    }, [JSON.stringify(defaultProp)]);
+  }
+  const setValueIfUncontrolled = React.useCallback((newValue) => {
+    if (!isControlled) {
+      setValue(newValue);
+    }
+  }, []);
+  return [value, setValueIfUncontrolled];
+}
+function useEventCallback(fn2) {
+  const ref = React.useRef(fn2);
+  useEnhancedEffect(() => {
+    ref.current = fn2;
+  });
+  return React.useRef((...args) => (
+    // @ts-expect-error hide `this`
+    (0, ref.current)(...args)
+  )).current;
+}
+function useForkRef(...refs) {
+  const cleanupRef = React.useRef(void 0);
+  const refEffect = React.useCallback((instance) => {
+    const cleanups = refs.map((ref) => {
+      if (ref == null) {
+        return null;
+      }
+      if (typeof ref === "function") {
+        const refCallback = ref;
+        const refCleanup = refCallback(instance);
+        return typeof refCleanup === "function" ? refCleanup : () => {
+          refCallback(null);
+        };
+      }
+      ref.current = instance;
+      return () => {
+        ref.current = null;
+      };
+    });
+    return () => {
+      cleanups.forEach((refCleanup) => refCleanup == null ? void 0 : refCleanup());
+    };
+  }, refs);
+  return React.useMemo(() => {
+    if (refs.every((ref) => ref == null)) {
+      return null;
+    }
+    return (value) => {
+      if (cleanupRef.current) {
+        cleanupRef.current();
+        cleanupRef.current = void 0;
+      }
+      if (value != null) {
+        cleanupRef.current = refEffect(value);
+      }
+    };
+  }, refs);
+}
+const UNINITIALIZED = {};
+function useLazyRef(init, initArg) {
+  const ref = React.useRef(UNINITIALIZED);
+  if (ref.current === UNINITIALIZED) {
+    ref.current = init(initArg);
+  }
+  return ref;
+}
+const EMPTY = [];
+function useOnMount(fn2) {
+  React.useEffect(fn2, EMPTY);
+}
+class Timeout {
+  constructor() {
+    __publicField(this, "currentId", null);
+    __publicField(this, "clear", () => {
+      if (this.currentId !== null) {
+        clearTimeout(this.currentId);
+        this.currentId = null;
+      }
+    });
+    __publicField(this, "disposeEffect", () => {
+      return this.clear;
+    });
+  }
+  static create() {
+    return new Timeout();
+  }
+  /**
+   * Executes `fn` after `delay`, clearing any previously scheduled call.
+   */
+  start(delay, fn2) {
+    this.clear();
+    this.currentId = setTimeout(() => {
+      this.currentId = null;
+      fn2();
+    }, delay);
+  }
+}
+function useTimeout() {
+  const timeout2 = useLazyRef(Timeout.create).current;
+  useOnMount(timeout2.disposeEffect);
+  return timeout2;
+}
+function isFocusVisible(element) {
+  try {
+    return element.matches(":focus-visible");
+  } catch (error) {
+    if (process.env.NODE_ENV !== "production" && !window.navigator.userAgent.includes("jsdom")) {
+      console.warn(["MUI: The `:focus-visible` pseudo class is not supported in this browser.", "Some components rely on this feature to work properly."].join("\n"));
+    }
+  }
+  return false;
+}
+function getScrollbarSize(win = window) {
+  const documentWidth = win.document.documentElement.clientWidth;
+  return win.innerWidth - documentWidth;
+}
+const visuallyHidden = {
+  border: 0,
+  clip: "rect(0 0 0 0)",
+  height: "1px",
+  margin: "-1px",
+  overflow: "hidden",
+  padding: 0,
+  position: "absolute",
+  whiteSpace: "nowrap",
+  width: "1px"
+};
+function getTypeByValue(value) {
+  const valueType = typeof value;
+  switch (valueType) {
+    case "number":
+      if (Number.isNaN(value)) {
+        return "NaN";
+      }
+      if (!Number.isFinite(value)) {
+        return "Infinity";
+      }
+      if (value !== Math.floor(value)) {
+        return "float";
+      }
+      return "number";
+    case "object":
+      if (value === null) {
+        return "null";
+      }
+      return value.constructor.name;
+    default:
+      return valueType;
+  }
+}
+function requiredInteger(props, propName, componentName, location) {
+  const propValue = props[propName];
+  if (propValue == null || !Number.isInteger(propValue)) {
+    const propType = getTypeByValue(propValue);
+    return new RangeError(`Invalid ${location} \`${propName}\` of type \`${propType}\` supplied to \`${componentName}\`, expected \`integer\`.`);
+  }
+  return null;
+}
+function validator(props, propName, componentName, location) {
+  const propValue = props[propName];
+  if (propValue === void 0) {
+    return null;
+  }
+  return requiredInteger(props, propName, componentName, location);
+}
+function validatorNoop() {
+  return null;
+}
+validator.isRequired = requiredInteger;
+validatorNoop.isRequired = validatorNoop;
+const integerPropType = process.env.NODE_ENV === "production" ? validatorNoop : validator;
+function isHostComponent$1(element) {
+  return typeof element === "string";
+}
+function appendOwnerState(elementType, otherProps, ownerState) {
+  if (elementType === void 0 || isHostComponent$1(elementType)) {
+    return otherProps;
+  }
+  return {
+    ...otherProps,
+    ownerState: {
+      ...otherProps.ownerState,
+      ...ownerState
+    }
+  };
+}
+function extractEventHandlers(object2, excludeKeys = []) {
+  if (object2 === void 0) {
+    return {};
+  }
+  const result = {};
+  Object.keys(object2).filter((prop) => prop.match(/^on[A-Z]/) && typeof object2[prop] === "function" && !excludeKeys.includes(prop)).forEach((prop) => {
+    result[prop] = object2[prop];
+  });
+  return result;
+}
+function omitEventHandlers(object2) {
+  if (object2 === void 0) {
+    return {};
+  }
+  const result = {};
+  Object.keys(object2).filter((prop) => !(prop.match(/^on[A-Z]/) && typeof object2[prop] === "function")).forEach((prop) => {
+    result[prop] = object2[prop];
+  });
+  return result;
+}
+function mergeSlotProps$1(parameters) {
+  const {
+    getSlotProps,
+    additionalProps,
+    externalSlotProps,
+    externalForwardedProps,
+    className
+  } = parameters;
+  if (!getSlotProps) {
+    const joinedClasses2 = clsx(additionalProps == null ? void 0 : additionalProps.className, className, externalForwardedProps == null ? void 0 : externalForwardedProps.className, externalSlotProps == null ? void 0 : externalSlotProps.className);
+    const mergedStyle2 = {
+      ...additionalProps == null ? void 0 : additionalProps.style,
+      ...externalForwardedProps == null ? void 0 : externalForwardedProps.style,
+      ...externalSlotProps == null ? void 0 : externalSlotProps.style
+    };
+    const props2 = {
+      ...additionalProps,
+      ...externalForwardedProps,
+      ...externalSlotProps
+    };
+    if (joinedClasses2.length > 0) {
+      props2.className = joinedClasses2;
+    }
+    if (Object.keys(mergedStyle2).length > 0) {
+      props2.style = mergedStyle2;
+    }
+    return {
+      props: props2,
+      internalRef: void 0
+    };
+  }
+  const eventHandlers = extractEventHandlers({
+    ...externalForwardedProps,
+    ...externalSlotProps
+  });
+  const componentsPropsWithoutEventHandlers = omitEventHandlers(externalSlotProps);
+  const otherPropsWithoutEventHandlers = omitEventHandlers(externalForwardedProps);
+  const internalSlotProps = getSlotProps(eventHandlers);
+  const joinedClasses = clsx(internalSlotProps == null ? void 0 : internalSlotProps.className, additionalProps == null ? void 0 : additionalProps.className, className, externalForwardedProps == null ? void 0 : externalForwardedProps.className, externalSlotProps == null ? void 0 : externalSlotProps.className);
+  const mergedStyle = {
+    ...internalSlotProps == null ? void 0 : internalSlotProps.style,
+    ...additionalProps == null ? void 0 : additionalProps.style,
+    ...externalForwardedProps == null ? void 0 : externalForwardedProps.style,
+    ...externalSlotProps == null ? void 0 : externalSlotProps.style
+  };
+  const props = {
+    ...internalSlotProps,
+    ...additionalProps,
+    ...otherPropsWithoutEventHandlers,
+    ...componentsPropsWithoutEventHandlers
+  };
+  if (joinedClasses.length > 0) {
+    props.className = joinedClasses;
+  }
+  if (Object.keys(mergedStyle).length > 0) {
+    props.style = mergedStyle;
+  }
+  return {
+    props,
+    internalRef: internalSlotProps.ref
+  };
+}
+function resolveComponentProps(componentProps, ownerState, slotState) {
+  if (typeof componentProps === "function") {
+    return componentProps(ownerState, slotState);
+  }
+  return componentProps;
+}
+function useSlotProps(parameters) {
+  var _a;
+  const {
+    elementType,
+    externalSlotProps,
+    ownerState,
+    skipResolvingSlotProps = false,
+    ...other
+  } = parameters;
+  const resolvedComponentsProps = skipResolvingSlotProps ? {} : resolveComponentProps(externalSlotProps, ownerState);
+  const {
+    props: mergedProps,
+    internalRef
+  } = mergeSlotProps$1({
+    ...other,
+    externalSlotProps: resolvedComponentsProps
+  });
+  const ref = useForkRef(internalRef, resolvedComponentsProps == null ? void 0 : resolvedComponentsProps.ref, (_a = parameters.additionalProps) == null ? void 0 : _a.ref);
+  const props = appendOwnerState(elementType, {
+    ...mergedProps,
+    ref
+  }, ownerState);
+  return props;
+}
+function getReactElementRef(element) {
+  var _a;
+  if (parseInt(React.version, 10) >= 19) {
+    return ((_a = element == null ? void 0 : element.props) == null ? void 0 : _a.ref) || null;
+  }
+  return (element == null ? void 0 : element.ref) || null;
+}
 function GlobalStyles(props) {
   return /* @__PURE__ */ jsx(GlobalStyles$1, {
     ...props,
@@ -42838,12 +42906,11 @@ Cell.displayName = "Cell";
 const calculateTop = ({ startHour, step, minuteHeight, timeZone }) => {
   const now = getTimeZonedDate(/* @__PURE__ */ new Date(), timeZone);
   const nowDayjs = dayjs(now);
-  const startTime = nowDayjs.hour(startHour).minute(0);
+  const currentTimeIndicatorHeight = 10;
+  const startTime = nowDayjs.clone().hour(startHour).minute(0).second(0);
   const minutesFromTop = nowDayjs.diff(startTime, "minute");
   const topSpace = minutesFromTop * minuteHeight;
-  const slotsFromTop = minutesFromTop / step;
-  const borderFactor = slotsFromTop + BORDER_HEIGHT;
-  return topSpace + borderFactor;
+  return topSpace - currentTimeIndicatorHeight / 2;
 };
 const CurrentTimeBar = ({ startHour, step, minuteHeight, timeZone, zIndex: zIndex2 }) => {
   const [top2, setTop] = useState(
@@ -43086,7 +43153,7 @@ const DayTable = ({
         sticky: "1",
         stickyNavigation,
         children: [
-          /* @__PURE__ */ jsx("span", { className: "rs__cell rs__time" }),
+          /* @__PURE__ */ jsx("span", { className: "rs__cell rs__time" }, "time-gutter"),
           showCurrentDay && /* @__PURE__ */ jsx(DayShowHeader, { children: /* @__PURE__ */ jsx(
             Typography$1,
             {
@@ -43098,7 +43165,7 @@ const DayTable = ({
               },
               children: dayjs(selectedDate).format("DD dddd")
             }
-          ) }),
+          ) }, "current-day-header"),
           resources.map((resource) => {
             if (resource.id !== "default") {
               return /* @__PURE__ */ jsxs(
@@ -43120,7 +43187,7 @@ const DayTable = ({
     ),
     /* @__PURE__ */ jsx(TableGrid, { days: resources.length, ref: bodyRef, children: hours.map((h, i2) => /* @__PURE__ */ jsxs(Fragment$1, { children: [
       /* @__PURE__ */ jsx("span", { style: { height: cellHeight }, className: "rs__cell rs__header rs__time", children: typeof hourRenderer === "function" ? /* @__PURE__ */ jsx("div", { children: hourRenderer(dayjs(h).format(hFormat)) }) : /* @__PURE__ */ jsx(Typography$1, { variant: "caption", children: dayjs(h).format(hFormat) }) }),
-      resources.map((resource) => {
+      resources.map((resource, resIdx) => {
         const start2 = dayjs(
           `${dayjs(selectedDate).format("YYYY/MM/DD")} ${dayjs(h).format(hFormat)}`
         );
@@ -43132,6 +43199,9 @@ const DayTable = ({
           resourceFields,
           fields
         );
+        const resourceId = resource[resourceFields.idField];
+        const hourId = dayjs(h).valueOf();
+        const uniqueCellKey = `cell-${hourId}-${resourceId || resIdx}`;
         return /* @__PURE__ */ jsxs(
           "span",
           {
@@ -43164,7 +43234,7 @@ const DayTable = ({
               )
             ]
           },
-          resource[resourceFields.idField]
+          uniqueCellKey
         );
       })
     ] }, dayjs(h).valueOf())) })

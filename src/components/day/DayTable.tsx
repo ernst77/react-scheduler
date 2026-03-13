@@ -85,26 +85,33 @@ const DayTable = ({
         sticky="1"
         stickyNavigation={stickyNavigation}
       >
-        <span className="rs__cell rs__time"></span>
-        {showCurrentDay && <DayShowHeader>
-          <Typography
-            sx={{
-              py:2,
-              textAlign: 'center',
-              fontWeight: 'bold',
-              color: 'primary.main',
-            }}>{dayjs(selectedDate).format('DD dddd')}</Typography>
-        </DayShowHeader>}
+        <span key="time-gutter" className="rs__cell rs__time"></span>
+        {showCurrentDay && (
+          <DayShowHeader key="current-day-header">
+            <Typography
+              sx={{
+                py: 2,
+                textAlign: 'center',
+                fontWeight: 'bold',
+                color: 'primary.main',
+              }}
+            >
+              {dayjs(selectedDate).format('DD dddd')}
+            </Typography>
+          </DayShowHeader>
+        )}
         {resources.map((resource) => {
           if (resource.id !== 'default') {
-            return <span
-              key={resource[resourceFields.idField]}
-              className="rs__cell rs__header"
-              style={{ height: headerHeight }}
-            >
-            <ResourceHeader resource={resource} />
-              {renderMultiDayEvents(resourcedEvents, resource)}
-          </span>
+            return (
+              <span
+                key={resource[resourceFields.idField]}
+                className="rs__cell rs__header"
+                style={{ height: headerHeight }}
+              >
+                <ResourceHeader resource={resource} />
+                {renderMultiDayEvents(resourcedEvents, resource)}
+              </span>
+            );
           }
         })}
       </TableGrid>
@@ -119,7 +126,7 @@ const DayTable = ({
                 <Typography variant="caption">{dayjs(h).format(hFormat)}</Typography>
               )}
             </span>
-            {resources.map((resource) => {
+            {resources.map((resource, resIdx) => {
               const start = dayjs(
                 `${dayjs(selectedDate).format('YYYY/MM/DD')} ${dayjs(h).format(hFormat)}`
               );
@@ -134,9 +141,15 @@ const DayTable = ({
                 fields
               );
 
+              const resourceId = resource[resourceFields.idField];
+              const hourId = dayjs(h).valueOf(); // Unique timestamp for the row
+
+              // Combine them to create a unique "Coordinate" Key
+              const uniqueCellKey = `cell-${hourId}-${resourceId || resIdx}`;
+
               return (
                 <span
-                  key={resource[resourceFields.idField]}
+                  key={uniqueCellKey}
                   className={`rs__cell ${isDateToday(selectedDate) ? 'rs__today_cell' : ''}`}
                 >
                   {i === 0 && (
